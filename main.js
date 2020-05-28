@@ -1,6 +1,7 @@
 const wrap_avatar = document.getElementsByClassName('wrap-avatar');
 const avatar = document.getElementsByClassName('my-avatar');
 const ul_nav_bar = document.getElementsByClassName('ul-nav-bar');
+const canvas = document.getElementsByClassName('canvas');
 const mouse_pos ={
     x:0,
     y:0
@@ -60,5 +61,23 @@ window.addEventListener('click',function(event){
         }
     }
 })
+window.addEventListener('scroll',function(){
+    for(let i = 0 ; i < ul_nav_bar[0].childElementCount;i++){
+        if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY)/window.innerHeight >= 0.94 ){
+            ul_nav_bar[0].children[i].style.color = 'black';
+        }
+        else{
+            ul_nav_bar[0].children[i].style.color = 'white';
+        }
+    }
+        if(window.scrollY >= window.innerHeight*2){
+            canvas[0].style.position = '';
+            canvas[0].style.top = (window.innerHeight*2)+'px';
+        }
+        else{
+            canvas[0].style.position = 'fixed';
+            canvas[0].style.top = 0;
+        }
+  })
 // event.clientX > wrap_avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < wrap_avatar[0].offsetParent.parentElement.offsetLeft+wrap_avatar[0].offsetParent.parentElement.offsetWidth &&
 // event.clientY > wrap_avatar[0].offsetParent.parentElement.offsetTop && event.clientY < wrap_avatar[0].offsetParent.parentElement.offsetTop+wrap_avatar[0].offsetParent.parentElement.offsetHeight

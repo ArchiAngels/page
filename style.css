@@ -1,7 +1,33 @@
 @font-face{
     font-family: 'Bungee Hairline';
     src:url("./Fonts/Bungee_Hairline/BungeeHairline-Regular.ttf");
+    
 }
+@font-face{
+    font-family: 'Roboto';
+    src:url("./Fonts/Roboto/Roboto-Thin.ttf");  
+    font-weight: 100;
+}
+@font-face{
+    font-family: 'Roboto';
+    src:url("./Fonts/Roboto/Roboto-Regular.ttf"); 
+    font-weight: 400;
+}
+@font-face{
+    font-family: 'Roboto';
+    src:url("./Fonts/Roboto/Roboto-Medium.ttf");
+    font-weight:500;
+}
+@font-face{
+    font-family: 'Roboto';
+    src:url("./Fonts/Roboto/Roboto-Light.ttf");
+    font-weight:300;
+}
+@font-face{
+    font-family: 'Roboto';
+    src:url("./Fonts/Roboto/Roboto-Bold.ttf"); 
+    font-weight:700;
+}   
 body{
     /* max-width:100vw; */
     height:100%;
@@ -11,14 +37,18 @@ body{
     margin: 0;
     font-family: 'Bungee Hairline';
 }
-.flex-row-center{
+.flex-row-xy-center{
     display:flex;
     justify-content: center;
     align-items: center;
 }
-.flex-row{
+.flex-row-x-center{
     display:flex;
     justify-content: center;
+}
+.flex-row-y-center{
+    display:flex;
+    align-items: center;
 }
 .flex-column-center-center{
     display:flex;
@@ -53,12 +83,19 @@ body{
     height:100%;
     /* border:1px solid red; */
 }
+.wrap_for_bgc{
+    overflow:hidden;
+    max-width:100vw;
+    max-height:100vh;
+}
 .mount-bgc{
-    width:100vw;
-    height:100vh;
+    width:102vw;
+    height:103vh;
     background-image: url('imgs/photo-1477346611705-65d1883cee1e.jpg');
     background-size:cover;
     filter:blur(5px);
+    margin-top:-1rem;
+    margin-left:-1rem;
 }
 .content{
     z-index:3;
@@ -81,6 +118,9 @@ body{
     color:black;
     font-weight: 900;
     transition: all 0.3s linear;
+}
+.btn-mini-hide{
+    margin-top:-4rem;
 }
 .btn-nav-bar:hover{
     box-shadow: 2px 2px 20px white;
@@ -146,6 +186,7 @@ body{
 .my-avatar{
     /* width:25vw; */
     /* height:50vh; */
+    /* transform: rotateX(0deg) rotateY(0deg); */
     width:400px;
     height:400px;
     background-image: url("imgs/gpxCPWS_PCc.png");
@@ -153,9 +194,61 @@ body{
     border:1px solid white;
     border-bottom-left-radius: 50%;
     border-bottom-right-radius: 50%;
-    transition:all 0.3s linear;
+    transition:transform 0.3s linear;
     transform-style:preserve-3d;
 }
 .my-avatar:hover{
     cursor: pointer;
+}
+.wrap-computer{
+    width:100%;
+    height:100%;
+    /* border:1px solid red; */
+    padding-left: 2rem;
+    padding-right: 2rem;
+    font-family: "Roboto";
+    font-weight: 400;
+}
+.computer{
+    width:40vw;
+    height:50vh;
+    background-color: rgba(0,0,0,0.95);
+    color:transparent;
+    text-align: left;
+    padding: 2rem;
+    border-radius: 2%;
+    font-size:1.5rem;
+    
+}
+.computer_anim{
+    color:white;
+    /* position: absolute; */
+    /* transition: all 0.3s linear; */
+    animation: computer_anim 5s linear;
+}
+.hide_show{
+    /* color:transparent; */
+    opacity: 0;
+    /* color:red; */
+    animation: hide_show 1s linear 6s infinite;
+}
+
+@keyframes computer_anim{
+    0%{
+        /* font-size:3rem; */
+        opacity:0;
+    }
+    0%{
+        opacity:0;
+    }
+    100%{
+        /* font-size:1.5rem; */
+        /* margin-left:0rem; */
+        opacity:1;
+    }
+}
+@keyframes hide_show{
+    0%{opacity:0;}
+    50%{opacity:1;}
+    100%{opacity:0;}
 }

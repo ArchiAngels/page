@@ -1,7 +1,11 @@
 const wrap_avatar = document.getElementsByClassName('wrap-avatar');
 const avatar = document.getElementsByClassName('my-avatar');
+const btn_ul = document.getElementsByClassName('btn-nav-bar');
 const ul_nav_bar = document.getElementsByClassName('ul-nav-bar');
 const canvas = document.getElementsByClassName('canvas');
+const computer = document.getElementsByClassName('computer');
+let one_time = true;
+let tmp_a = window.scrollY > btn_ul[0].offsetHeight;
 const mouse_pos ={
     x:0,
     y:0
@@ -18,7 +22,22 @@ window.addEventListener('mousemove',function(event){
                 }
             }
         else{css_class_js(false);}
-        
+        if(tmp_a){
+            // console.log('//');
+            if(event.target == btn_ul[0]){
+                for(let i = 0; i < btn_ul[0].classList.length;i++){
+                    if(btn_ul[0].classList[i] == 'btn-mini-hide'){
+                        btn_ul[0].classList.remove('btn-mini-hide');
+                    }
+                }
+            }
+            else{
+                if(btn_ul[0].innerHTML == 'Open'){
+                    btn_ul[0].classList.add('btn-mini-hide');
+                }
+            }
+        }
+        else{}
 });
 function css_class_js(bool){
     if(bool){
@@ -62,6 +81,7 @@ window.addEventListener('click',function(event){
     }
 })
 window.addEventListener('scroll',function(){
+    tmp_a = window.scrollY > btn_ul[0].offsetHeight;
     for(let i = 0 ; i < ul_nav_bar[0].childElementCount;i++){
         if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY)/window.innerHeight >= 0.94 ){
             ul_nav_bar[0].children[i].style.color = 'black';
@@ -78,6 +98,43 @@ window.addEventListener('scroll',function(){
             canvas[0].style.position = 'fixed';
             canvas[0].style.top = 0;
         }
-  })
+        if(window.scrollY/window.innerHeight >= 0.35){
+            one_time == true?Not_a_name():0;
+            function Not_a_name(){init_comp_text();one_time = false;}
+        }
+    if(window.scrollY > btn_ul[0].offsetHeight){
+        btn_ul[0].innerHTML == 'Open'?btn_ul[0].classList.add('btn-mini-hide'):0;
+    }
+    else{
+        btn_ul[0].classList.remove('btn-mini-hide');
+    }
+})
+window.addEventListener('keyup',function(event){
+    change_comp_text();
+})
+function init_comp_text(){
+    let tmp = computer[0].innerText;
+    computer[0].innerText = '';
+    for(let i=0;i<tmp.length;i++){
+        if(tmp[i] == ' '){
+            computer[0].innerHTML += ` `;
+        }
+        else{
+            if(i == tmp.length - 1){
+                computer[0].innerHTML += `<span class="computer_anim hide_show">${tmp[i]}</span>`;
+            }
+            else{
+                computer[0].innerHTML += `<span class="computer_anim">${tmp[i]}</span>`;
+            }
+        }
+    }
+}
+function change_comp_text(){
+    tmp2 = '</> Hello world ! </>'
+    computer[0].innerText = '';
+    for(let i = 0; i < tmp2.length;i++){
+        computer[0].innerHTML += `<span class="computer_anim">${tmp2[i]}</span>`;
+    }
+}
 // event.clientX > wrap_avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < wrap_avatar[0].offsetParent.parentElement.offsetLeft+wrap_avatar[0].offsetParent.parentElement.offsetWidth &&
 // event.clientY > wrap_avatar[0].offsetParent.parentElement.offsetTop && event.clientY < wrap_avatar[0].offsetParent.parentElement.offsetTop+wrap_avatar[0].offsetParent.parentElement.offsetHeight

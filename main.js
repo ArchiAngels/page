@@ -14,16 +14,15 @@ let dis_pers = 25;
 
 window.addEventListener('mousemove',function(event){
         if(event.clientX > avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < avatar[0].offsetParent.parentElement.offsetLeft+ avatar[0].offsetParent.parentElement.offsetWidth &&
-            event.clientY + window.scrollY > avatar[0].offsetParent.parentElement.offsetTop && event.clientY + window.scrollY< avatar[0].offsetParent.parentElement.offsetTop+ avatar[0].offsetParent.parentElement.offsetHeight){
+            event.clientY +window.scrollY> avatar[0].offsetParent.parentElement.offsetTop && event.clientY +window.scrollY< avatar[0].offsetParent.parentElement.offsetTop+ avatar[0].offsetParent.parentElement.offsetHeight){
                 if(event.target == avatar[0]){
                     mouse_pos.x = event.clientX - avatar[0].offsetParent.offsetLeft;
-                    mouse_pos.y = event.clientY - avatar[0].offsetParent.offsetTop;                    
+                    mouse_pos.y = event.clientY - avatar[0].offsetParent.offsetTop + window.scrollY;                    
                     css_class_js(true);
                 }
-            }
+        }
         else{css_class_js(false);}
         if(tmp_a){
-            // console.log('//');
             if(event.target == btn_ul[0]){
                 for(let i = 0; i < btn_ul[0].classList.length;i++){
                     if(btn_ul[0].classList[i] == 'btn-mini-hide'){

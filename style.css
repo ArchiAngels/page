@@ -133,9 +133,14 @@ body{
     /* border:1px solid red; */
 }
 .nav-bar-ul-li{
+    /* border:1px solid yellow; */
     color:white;
     font-size:2rem;    
-    padding:1rem;
+    padding: 1rem;
+    /* max-height:1rem; */
+    /* margin-top:0.5rem; */
+    /* font-weight:400; */
+    /* margin-bottom:0.5rem; */
     text-align: left;
     transition: all 0.3s linear;
 }

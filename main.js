@@ -5,6 +5,7 @@ const ul_nav_bar = document.getElementsByClassName('ul-nav-bar');
 const canvas = document.getElementsByClassName('canvas');
 const btn_ul = {
     class:document.getElementsByClassName('btn-nav-bar'),
+    onFocus:false,
     open:function (){
             this.class[0].innerHTML = 'Clouse';
             this.class[0].style.borderRadius = '0%';
@@ -14,7 +15,13 @@ const btn_ul = {
                 // ul_nav_bar[0].children[i].classList.add('Fade');
                 ul_nav_bar[0].children[i].classList.remove('hide');
                 ul_nav_bar[0].children[i].classList.add('nav-bar-ul-li');
+
+                
             }
+            setTimeout(function(){
+                checkTextMargin();
+            },400);
+            
         },
     clouse:function (){
             this.class[0].innerHTML = 'Open';
@@ -25,8 +32,13 @@ const btn_ul = {
                 // ul_nav_bar[0].children[i].classList.remove('Fade');
                 ul_nav_bar[0].children[i].classList.remove('nav-bar-ul-li');
                 ul_nav_bar[0].children[i].classList.add('hide');
-                this.class[0].classList.add('btn-mini-hide');
             }
+            
+            this.onFocus == false?this.class[0].classList.add('btn-mini-hide'):0;
+            // setTimeout(function(){
+            //     checkTextMargin();
+            // },400);
+
         }
 }
 let ul_info = {
@@ -36,19 +48,21 @@ let ul_info = {
     n0:[],
     n1:[],
     reset:function(finish_number){
-        console.log('RESET OBJ',this.current_anim[0]);
+        // console.log('RESET OBJ',this.current_anim[0]);
         this.const[finish_number].last_item.innerHTML = this.const[finish_number].const;
-        console.log(this.const[finish_number].last_item.innerHTML);
+        this.const[finish_number].class[0] != ''? this.const[finish_number].last_item.classList.add(`${this.const[finish_number].class[0]}`):0;
+        // console.log(finish_number);
         this.can_anim[finish_number] = true;
         this.n0[finish_number] = 0;
         this.n1[finish_number] = 0;
         this.const[finish_number].last_item = 0;
-        this.current_anim[finish_number] = 'finish';
+        
+        this.current_anim.pop();
     }
 }
 // let arr_sym = ['%','$','/','@',';','!','+','#'];
 let arr_sym = ['诶','比','西','迪','伊','弗','吉','尺','艾','杰','开','勒','马','娜','哦','屁','吉','儿','丝','提','伊','维','维','克','艾','德'];
-// let arr_sym = ['💥','😾','👻','🌈','❄','☄','⚡','🌚','🌍','🎄','🎨','🎋','🍭','🍪','🍑','🦊','🐅','🤔','⚔','👑','📚','💰','🍍','🦋','🍁','🦆'];
+// let arr_sym = ['💥','😾','👻','🌈','🌍','🎄','🎨','🎋','🍭','🍪','🍑','🦊','🐅','🤔','👑','📚','💰','🍍','🦋','🍁','🦆'];
 let tmp_a = window.scrollY > btn_ul.class[0].offsetHeight;
 const mouse_pos ={
     x:0,
@@ -70,6 +84,7 @@ window.addEventListener('mousemove',function(event){
         else{css_class_js(false);}
         if(tmp_a){
             if(event.target == btn_ul.class[0]){
+                btn_ul.onFocus = true;
                 for(let i = 0; i < btn_ul.class[0].classList.length;i++){
                     if(btn_ul.class[0].classList[i] == 'btn-mini-hide'){
                         btn_ul.class[0].classList.remove('btn-mini-hide');
@@ -77,43 +92,22 @@ window.addEventListener('mousemove',function(event){
                 }
             }
             else{
+                btn_ul.onFocus = false;
                 if(btn_ul.class[0].innerHTML == 'Open'){
                     btn_ul.class[0].classList.add('btn-mini-hide');
                 }
             }
-        }
-        if(btn_ul.class[0].innerHTML == 'Clouse'){
-                for( let i = 0; i < ul_nav_bar[0].children.length;i++){
-                    if(event.target == ul_nav_bar[0].children[i]){
-                        // console.log('IN',event.target);
-                        // break;
-                        if(ul_info.can_anim[i]){
-                            if(event.target != ul_info.const[i].last_item){
-                                    ul_info.const[i]['last_item'] = event.target;
-                                    ul_info.current_anim.push(i);
-                                    console.log(`START :: ${ul_info.const[i].last_item} index:: ${ul_info.current_anim}`);
-                                // if(ul_info.const.length < 5) {}
-                                // else{
-                                //     ul_info.const.shift();
-                                // }
-                                    anim_for(ul_info.const[i]);
-                                break;
-                            }
-                        }
-                    }
-                    // else{
-                        // if(i == ul_nav_bar[0].children.length -1 && ul_info.can_anim != true){
-                        //         // console.log('OutSide',event.target);
-                        //     // setTimeout(function(){
-                        //         console.log('THIS TRO RESET');
-                        //         ul_info.reset();
-                        //     // },150);
-                        //         break;
-                        // }
-                    // }
-                }
-        }
-        
+        } 
+        else{
+            if(event.target == btn_ul.class[0]){
+                btn_ul.onFocus = true;
+            }
+            else{
+                btn_ul.onFocus = false;
+                
+            }
+            btn_ul.class[0].classList.remove('btn-mini-hide');
+        }       
 });
 function css_class_js(bool){
     if(bool){
@@ -133,17 +127,27 @@ window.addEventListener('click',function(event){
     if(event.target == btn_ul.class[0]){
         btn_ul.class[0].textContent == 'Open'? btn_ul.open(): btn_ul.clouse();
     }
+    if(btn_ul.class[0].innerHTML == 'Clouse'){
+        for( let i = 0; i < ul_nav_bar[0].children.length;i++){
+            if(event.target == ul_nav_bar[0].children[i]){
+                // console.log('IN',i,event.target.children[0].innerHTML,ul_nav_bar[0].children[i].children[0].innerHTML);
+                // break;
+                if(ul_info.can_anim[i]){
+                    if(event.target != ul_info.const[i].last_item){
+                        ul_info.const[i]['last_item'] = event.target.children[0];
+                        ul_info.current_anim.push(i);
+                        console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
+                        anim_for(ul_info.const[i]);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 })
 window.addEventListener('scroll',function(){
     tmp_a = window.scrollY > btn_ul.class[0].offsetHeight;
-    for(let i = 0 ; i < ul_nav_bar[0].childElementCount;i++){
-        if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY)/window.innerHeight >= 0.94 ){
-            ul_nav_bar[0].children[i].style.color = 'black';
-        }
-        else{
-            ul_nav_bar[0].children[i].style.color = 'white';
-        }
-    }
+    checkTextMargin();
         if(window.scrollY >= window.innerHeight*2){
             canvas[0].style.position = '';
             canvas[0].style.top = (window.innerHeight*2)+'px';
@@ -165,6 +169,7 @@ function anim_for(item){
         ul_info.can_anim[item.index] = false;
         ul_info.n0[item.index] = 0;
         ul_info.n1[item.index] = item.last_item.innerHTML.length;
+        ul_info.const[item.index].class[0] != ''? ul_info.const[item.index].last_item.classList.remove(`${ul_info.const[item.index].class[0]}`):0;
         help_first(ul_info.n0[item.index],ul_info.n1[item.index],item.index);
     }
 }
@@ -177,7 +182,7 @@ function help_first(start_num,finish_num,index){
     }
     else{
         setTimeout(function(){
-            console.log('FINISH',index);
+            // console.log('FINISH',index);
             ul_info.reset(index);
         },150);
     }
@@ -208,17 +213,43 @@ function help_two(index,n = 0,l = arr_sym.length){
     }
 }
 function init(){
+    // checkTextMargin();
         for( let i = 0; i < ul_nav_bar[0].children.length;i++){
             let obj = {};
                 obj['index'] = i;
-                obj['const'] = ul_nav_bar[0].children[i].innerHTML;
+                obj['const'] = ul_nav_bar[0].children[i].children[0].innerHTML;
+                obj['class'] = ul_nav_bar[0].children[i].children[0].classList;
                 // obj['last_item'] = ul_nav_bar[0].children[i];
             ul_info.const.push(obj);
             ul_info.can_anim.push(true);
             ul_info.n0.push(0);
             ul_info.n1.push(0);
-            ul_nav_bar[0].children[i].innerHTML = 'Secret';
+            ul_nav_bar[0].children[i].innerHTML = '<p>Secret</p>';
         }
+}
+function checkTextMargin(){
+    for(let i = 0 ; i < ul_nav_bar[0].childElementCount;i++){
+        if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight >= 1.01 ){
+            ul_nav_bar[0].children[i].style.color = 'black';
+        }
+        else{
+            ul_nav_bar[0].children[i].style.color = 'white';
+        }
+        // console.log(i,(ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight);
+        let obj = {
+            a:ul_nav_bar[0].children[i].offsetTop,
+            b:window.scrollY,
+            c:ul_nav_bar[0].children[i].offsetHeight,
+            d:window.innerHeight,
+            mamam:function(){
+                // this["e"] = 'asd'
+                this['e'] = (this.b+this.a+this.c)/this.d;
+                console.log(i,this);
+            }
+        }
+        obj.mamam();
+        // console.log(i,obj);
+    }
 }
 // event.clientX > wrap_avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < wrap_avatar[0].offsetParent.parentElement.offsetLeft+wrap_avatar[0].offsetParent.parentElement.offsetWidth &&
 // event.clientY > wrap_avatar[0].offsetParent.parentElement.offsetTop && event.clientY < wrap_avatar[0].offsetParent.parentElement.offsetTop+wrap_avatar[0].offsetParent.parentElement.offsetHeight

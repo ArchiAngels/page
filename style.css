@@ -1,12 +1,16 @@
 @font-face{
     font-family: 'Bungee Hairline';
     src:url("./Fonts/Bungee_Hairline/BungeeHairline-Regular.ttf");
-    
 }
 @font-face{
     font-family: 'Roboto';
     src:url("./Fonts/Roboto/Roboto-Thin.ttf");  
     font-weight: 100;
+}
+@font-face{
+    font-family: 'Roboto';
+    src:url("./Fonts/Roboto/Roboto-Light.ttf");
+    font-weight:300;
 }
 @font-face{
     font-family: 'Roboto';
@@ -20,14 +24,34 @@
 }
 @font-face{
     font-family: 'Roboto';
-    src:url("./Fonts/Roboto/Roboto-Light.ttf");
-    font-weight:300;
-}
-@font-face{
-    font-family: 'Roboto';
     src:url("./Fonts/Roboto/Roboto-Bold.ttf"); 
     font-weight:700;
 }   
+@font-face{
+    font-family: 'Montserrat';
+    src:url("./Fonts/Montserrat/Montserrat-Thin.ttf");  
+    font-weight: 100;
+}
+@font-face{
+    font-family: 'Montserrat';
+    src:url("./Fonts/Montserrat/Montserrat-Regular.ttf");  
+    font-weight: 400;
+}
+@font-face{
+    font-family: 'Montserrat';
+    src:url("./Fonts/Montserrat/Montserrat-SemiBold.ttf");  
+    font-weight: 700;
+}
+@font-face{
+    font-family: 'Montserrat';
+    src:url("./Fonts/Montserrat/Montserrat-Light.ttf");  
+    font-weight: 300;
+}
+@font-face{
+    font-family: 'Montserrat';
+    src:url("./Fonts/Montserrat/Montserrat-ExtraLight.ttf");  
+    font-weight: 200;
+}
 body{
     /* max-width:100vw; */
     height:100%;
@@ -35,7 +59,10 @@ body{
     overflow-x: hidden;
     padding: 0;
     margin: 0;
-    font-family: 'Bungee Hairline';
+    /* font-family: 'Bungee Hairline'; */
+    font-family: 'Montserrat';
+    font-weight:300;
+    /* font-family: 'Roboto'; */
 }
 .flex-row-xy-center{
     display:flex;
@@ -123,7 +150,7 @@ body{
     box-shadow: 2px 2px 20px white;
     cursor:pointer;
 }
-.nav-bar ol{
+.ul-nav-bar{
     margin: 0;
     padding: 0;
     /* list-style: none; */
@@ -131,21 +158,37 @@ body{
     transition: all 0.3s linear;
     padding-left:4rem;
     /* border:1px solid red; */
+    /* border:3px solid red; */
 }
+/* .ul-nav-bar li{
+    background-color: yellow;
+    padding: 0;
+    margin: 0;
+    font-size:1rem;
+} */
 .nav-bar-ul-li{
-    /* border:1px solid yellow; */
-    color:white;
+    /* border:3px solid red; */
+    /* color:white; */
     font-size:2rem;    
     padding: 1rem;
     /* max-height:1rem; */
     /* margin-top:0.5rem; */
-    /* font-weight:400; */
+    font-weight:400;
     /* margin-bottom:0.5rem; */
     text-align: left;
     transition: all 0.3s linear;
 }
+.nav-bar-ul-li p{
+    margin: 0;
+    padding: 0;
+}
+.ul-nav-bar p{
+    margin: 0;
+    padding: 0;
+}
 .nav-bar-ul-li:hover{
     cursor: pointer;
+    padding-left: 2rem;
 }
 .nav-bar-ul-li::before{
     z-index:1;
@@ -176,7 +219,7 @@ body{
 .test1{
     width:100%;
     height:100vh;
-    /* border:1px solid yellow; */
+    border:1px solid yellow;
 }
 .my-avatar-bgc{
     background-image: url("imgs/photo-1477346611705-65d1883cee1e.jpg");
@@ -217,7 +260,7 @@ body{
     /* transform: rotateX(0deg) rotateY(0deg); */
     background-image: url("imgs/gpxCPWS_PCc.png");
     background-size: cover;
-    border:1px solid white;
+    border-top:1px solid white;
     border-bottom-left-radius: 50%;
     border-bottom-right-radius: 50%;
     transition:transform 0.3s linear;
@@ -225,4 +268,30 @@ body{
 }
 .my-avatar:hover{
     cursor: pointer;
+}
+.test_p::before{
+    /* display:none; */
+    position:absolute;
+    /* top:0; */
+    /* left: 0; */
+    margin: 0;
+    padding: 0;
+    content:'ABC🌈';
+    /* font-size:2rem; */
+    color:red;
+    /* width: 7rem; */
+    height:1rem;
+    /* border:1px solid yellow; */
+    overflow: hidden;
+}
+.block-wrap{
+    border:1px solid green;
+}
+.block{
+    min-width:100px;
+    min-height:100px;
+    background-color: #000;
+    margin: 0 1rem 0 1rem;
+    color:white;
+    font-size:1rem;
 }

@@ -3,6 +3,7 @@ const avatar = document.getElementsByClassName('my-avatar');
 // const btn_ul = document.getElementsByClassName('btn-nav-bar');
 const ul_nav_bar = document.getElementsByClassName('ul-nav-bar');
 const canvas = document.getElementsByClassName('canvas');
+const main_wrap = document.getElementsByClassName('main-content');
 const btn_ul = {
     class:document.getElementsByClassName('btn-nav-bar'),
     onFocus:false,
@@ -20,6 +21,7 @@ const btn_ul = {
             }
             setTimeout(function(){
                 checkTextMargin();
+                obj.fresh_data();
             },400);
             
         },
@@ -41,6 +43,20 @@ const btn_ul = {
 
         }
 }
+let obj = {
+    y:window.scrollY,
+    scr:window.innerHeight,
+    el:Math.round(window.scrollY/window.innerHeight),
+    change_color:function(){
+        ul_nav_bar[0].children[this.el].style.color = 'lightcoral';
+    },
+    fresh_data:function(){
+        this.y = window.scrollY;
+        this.scr = window.innerHeight;
+        this.el = Math.round(window.scrollY/window.innerHeight);
+        this.change_color();
+    }
+}
 let ul_info = {
     current_anim:[],
     can_anim:[],
@@ -56,13 +72,14 @@ let ul_info = {
         this.n0[finish_number] = 0;
         this.n1[finish_number] = 0;
         this.const[finish_number].last_item = 0;
-        
+        window.scrollTo(0,main_wrap[0].children[finish_number].offsetTop);
         this.current_anim.pop();
+        main_wrap[0].children[finish_number].classList.remove('no-display');
     }
 }
 // let arr_sym = ['%','$','/','@',';','!','+','#'];
 let arr_sym = ['诶','比','西','迪','伊','弗','吉','尺','艾','杰','开','勒','马','娜','哦','屁','吉','儿','丝','提','伊','维','维','克','艾','德'];
-// let arr_sym = ['💥','😾','👻','🌈','🌍','🎄','🎨','🎋','🍭','🍪','🍑','🦊','🐅','🤔','👑','📚','💰','🍍','🦋','🍁','🦆'];
+// let arr_sym2 = ['💥','😾','👻','🌈','🌍','🎄','🎨','🎋','🍭','🍪','🍑','🦊','🐅','🤔','👑','📚','💰','🍍','🦋','🍁','🦆'];
 let tmp_a = window.scrollY > btn_ul.class[0].offsetHeight;
 const mouse_pos ={
     x:0,
@@ -73,6 +90,8 @@ let dis_pers = 25;
 init();
 
 window.addEventListener('mousemove',function(event){
+    if(main_wrap[0].children[0].className.includes('no-display')){}
+    else{
         if(event.clientX > avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < avatar[0].offsetParent.parentElement.offsetLeft+ avatar[0].offsetParent.parentElement.offsetWidth &&
             event.clientY +window.scrollY> avatar[0].offsetParent.parentElement.offsetTop && event.clientY +window.scrollY< avatar[0].offsetParent.parentElement.offsetTop+ avatar[0].offsetParent.parentElement.offsetHeight){
                 if(event.target == avatar[0]){
@@ -82,6 +101,8 @@ window.addEventListener('mousemove',function(event){
                 }
         }
         else{css_class_js(false);}
+    }
+        
         if(tmp_a){
             if(event.target == btn_ul.class[0]){
                 btn_ul.onFocus = true;
@@ -130,6 +151,7 @@ window.addEventListener('click',function(event){
     if(btn_ul.class[0].innerHTML == 'Clouse'){
         for( let i = 0; i < ul_nav_bar[0].children.length;i++){
             if(event.target == ul_nav_bar[0].children[i]){
+                console.log(event.target);
                 // console.log('IN',i,event.target.children[0].innerHTML,ul_nav_bar[0].children[i].children[0].innerHTML);
                 // break;
                 if(ul_info.can_anim[i]){
@@ -162,7 +184,21 @@ window.addEventListener('scroll',function(){
     else{
         btn_ul.class[0].classList.remove('btn-mini-hide');
     }
+    obj.fresh_data();
+    // console.log(obj);
 })
+function abcss(index){
+    // for(let i = 0; i < ul_nav_bar[0].childElementCount;i++){
+        
+        // checkTextMargin();
+        // if(i == index){
+            // ul_nav_bar[0].children[i].classList.add('fade');
+        // }
+        // else{
+            // ul_nav_bar[0].children[i].classList.remove('fade');
+        // }
+    // }
+}
 function anim_for(item){
     // console.log('go',item,item.index);
     if(ul_info.can_anim){
@@ -192,14 +228,22 @@ function help_two(index,n = 0,l = arr_sym.length){
         let tmp_1,tmp_2,tmp_3,tmp_4;
             tmp_1 = ul_info.const[index].last_item.innerHTML.slice(0,ul_info.n0[index]);
             tmp_2 = ul_info.const[index].last_item.innerHTML.slice(ul_info.n0[index]+1,ul_info.const[index].last_item.innerHTML.length);
-            tmp_4 = (Math.round(Math.random()*(arr_sym.length-1)));
+            tmp_4 = arr_sym[(Math.round(Math.random()*(arr_sym.length-1)))];
         if(ul_info.const[index].last_item.innerHTML[ul_info.n0[index]] != ' '){
-            tmp_3 = tmp_1 + arr_sym[tmp_4] + tmp_2;
+            tmp_3 = `${tmp_1}${tmp_4}${tmp_2}`;
         }
         else{
             tmp_3 = tmp_1 + ' ' + tmp_2;
         }
-        // console.log(n,l,tmp_3);
+        // let obj = {
+        //     tmp1:tmp_1,
+        //     tmp2:tmp_2,
+        //     tmp4:tmp_4,
+        //     tmp3:tmp_3,
+        //     index:n,
+        //     max:l
+        // }
+        // console.log(n,obj);
             ul_info.const[index].last_item.innerHTML = tmp_3;
         setTimeout(function(){
             help_two(index,n+1,l);
@@ -236,18 +280,18 @@ function checkTextMargin(){
             ul_nav_bar[0].children[i].style.color = 'white';
         }
         // console.log(i,(ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight);
-        let obj = {
-            a:ul_nav_bar[0].children[i].offsetTop,
-            b:window.scrollY,
-            c:ul_nav_bar[0].children[i].offsetHeight,
-            d:window.innerHeight,
-            mamam:function(){
-                // this["e"] = 'asd'
-                this['e'] = (this.b+this.a+this.c)/this.d;
-                console.log(i,this);
-            }
-        }
-        obj.mamam();
+        // let obj = {
+        //     a:ul_nav_bar[0].children[i].offsetTop,
+        //     b:window.scrollY,
+        //     c:ul_nav_bar[0].children[i].offsetHeight,
+        //     d:window.innerHeight,
+        //     mamam:function(){
+        //         // this["e"] = 'asd'
+        //         this['e'] = (this.b+this.a+this.c)/this.d;
+        //         console.log(i,this);
+        //     }
+        // }
+        // obj.mamam();
         // console.log(i,obj);
     }
 }

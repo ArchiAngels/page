@@ -11,49 +11,39 @@ const btn_ul = {
             this.class[0].innerHTML = 'Clouse';
             this.class[0].style.borderRadius = '0%';
             this.class[0].style.transform = 'rotate(360deg)';
-            // ul_nav_bar[0].classList.remove('hide');
-            for(let i = 0; i < ul_nav_bar[0].children.length;i++){
-                // ul_nav_bar[0].children[i].classList.add('Fade');
-                ul_nav_bar[0].children[i].classList.remove('hide');
-                ul_nav_bar[0].children[i].classList.add('nav-bar-ul-li');
-
-                
-            }
+                for(let i = 0; i < ul_nav_bar[0].children.length;i++){
+                    ul_nav_bar[0].children[i].classList.remove('hide');
+                    ul_nav_bar[0].children[i].classList.add('nav-bar-ul-li');                
+                }
             setTimeout(function(){
                 checkTextMargin();
                 obj.fresh_data();
             },400);
-            
         },
     clouse:function (){
             this.class[0].innerHTML = 'Open';
             this.class[0].style.transform = 'rotate(-360deg)';
             this.class[0].style.borderRadius = '50%';
-            // ul_nav_bar[0].classList.add('hide');
-            for(let i = 0; i < ul_nav_bar[0].children.length;i++){
-                // ul_nav_bar[0].children[i].classList.remove('Fade');
-                ul_nav_bar[0].children[i].classList.remove('nav-bar-ul-li');
-                ul_nav_bar[0].children[i].classList.add('hide');
-            }
-            
+                for(let i = 0; i < ul_nav_bar[0].children.length;i++){
+                    ul_nav_bar[0].children[i].classList.remove('nav-bar-ul-li');
+                    ul_nav_bar[0].children[i].classList.add('hide');
+                }
             this.onFocus == false?this.class[0].classList.add('btn-mini-hide'):0;
-            // setTimeout(function(){
-            //     checkTextMargin();
-            // },400);
-
         }
 }
 let obj = {
     y:window.scrollY,
-    scr:window.innerHeight,
-    el:Math.round(window.scrollY/window.innerHeight),
     change_color:function(){
-        ul_nav_bar[0].children[this.el].style.color = 'lightcoral';
+        for(let i = 0; i < main_wrap[0].childElementCount;i++){
+            if(this.y + window.innerHeight*0.5 >= main_wrap[0].children[i].offsetTop &&
+                this.y + window.innerHeight*0.5 < main_wrap[0].children[i].offsetHeight + main_wrap[0].children[i].offsetTop ){
+                ul_nav_bar[0].children[i].style.color = 'lightcoral';
+                break;
+            }
+        }
     },
     fresh_data:function(){
         this.y = window.scrollY;
-        this.scr = window.innerHeight;
-        this.el = Math.round(window.scrollY/window.innerHeight);
         this.change_color();
     }
 }
@@ -65,6 +55,8 @@ let ul_info = {
     n1:[],
     reset:function(finish_number){
         // console.log('RESET OBJ',this.current_anim[0]);
+        this.const[finish_number].last_item.parentElement.style.color == 'lightcoral'?0:window.scrollTo(0,main_wrap[0].children[finish_number].offsetTop);
+        // console.log(this.const[finish_number].last_item,this.const[finish_number].last_item.parentElement,this.const[finish_number].last_item.parentElement.style.color);
         this.const[finish_number].last_item.innerHTML = this.const[finish_number].const;
         this.const[finish_number].class[0] != ''? this.const[finish_number].last_item.classList.add(`${this.const[finish_number].class[0]}`):0;
         // console.log(finish_number);
@@ -72,12 +64,11 @@ let ul_info = {
         this.n0[finish_number] = 0;
         this.n1[finish_number] = 0;
         this.const[finish_number].last_item = 0;
-        window.scrollTo(0,main_wrap[0].children[finish_number].offsetTop);
+        
         this.current_anim.pop();
         main_wrap[0].children[finish_number].classList.remove('no-display');
     }
 }
-// let arr_sym = ['%','$','/','@',';','!','+','#'];
 let arr_sym = ['诶','比','西','迪','伊','弗','吉','尺','艾','杰','开','勒','马','娜','哦','屁','吉','儿','丝','提','伊','维','维','克','艾','德'];
 // let arr_sym2 = ['💥','😾','👻','🌈','🌍','🎄','🎨','🎋','🍭','🍪','🍑','🦊','🐅','🤔','👑','📚','💰','🍍','🦋','🍁','🦆'];
 let tmp_a = window.scrollY > btn_ul.class[0].offsetHeight;
@@ -92,8 +83,10 @@ init();
 window.addEventListener('mousemove',function(event){
     if(main_wrap[0].children[0].className.includes('no-display')){}
     else{
-        if(event.clientX > avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < avatar[0].offsetParent.parentElement.offsetLeft+ avatar[0].offsetParent.parentElement.offsetWidth &&
-            event.clientY +window.scrollY> avatar[0].offsetParent.parentElement.offsetTop && event.clientY +window.scrollY< avatar[0].offsetParent.parentElement.offsetTop+ avatar[0].offsetParent.parentElement.offsetHeight){
+        if(event.clientX > avatar[0].offsetParent.parentElement.offsetLeft && 
+            event.clientX < avatar[0].offsetParent.parentElement.offsetLeft + avatar[0].offsetParent.parentElement.offsetWidth &&
+            event.clientY + window.scrollY> avatar[0].offsetParent.parentElement.offsetTop && 
+            event.clientY + window.scrollY< avatar[0].offsetParent.parentElement.offsetTop + avatar[0].offsetParent.parentElement.offsetHeight){
                 if(event.target == avatar[0]){
                     mouse_pos.x = event.clientX - avatar[0].offsetParent.offsetLeft;
                     mouse_pos.y = event.clientY - avatar[0].offsetParent.offsetTop + window.scrollY;                    
@@ -102,7 +95,6 @@ window.addEventListener('mousemove',function(event){
         }
         else{css_class_js(false);}
     }
-        
         if(tmp_a){
             if(event.target == btn_ul.class[0]){
                 btn_ul.onFocus = true;
@@ -125,7 +117,6 @@ window.addEventListener('mousemove',function(event){
             }
             else{
                 btn_ul.onFocus = false;
-                
             }
             btn_ul.class[0].classList.remove('btn-mini-hide');
         }       
@@ -151,9 +142,6 @@ window.addEventListener('click',function(event){
     if(btn_ul.class[0].innerHTML == 'Clouse'){
         for( let i = 0; i < ul_nav_bar[0].children.length;i++){
             if(event.target == ul_nav_bar[0].children[i]){
-                console.log(event.target);
-                // console.log('IN',i,event.target.children[0].innerHTML,ul_nav_bar[0].children[i].children[0].innerHTML);
-                // break;
                 if(ul_info.can_anim[i]){
                     if(event.target != ul_info.const[i].last_item){
                         ul_info.const[i]['last_item'] = event.target.children[0];
@@ -185,22 +173,8 @@ window.addEventListener('scroll',function(){
         btn_ul.class[0].classList.remove('btn-mini-hide');
     }
     obj.fresh_data();
-    // console.log(obj);
 })
-function abcss(index){
-    // for(let i = 0; i < ul_nav_bar[0].childElementCount;i++){
-        
-        // checkTextMargin();
-        // if(i == index){
-            // ul_nav_bar[0].children[i].classList.add('fade');
-        // }
-        // else{
-            // ul_nav_bar[0].children[i].classList.remove('fade');
-        // }
-    // }
-}
 function anim_for(item){
-    // console.log('go',item,item.index);
     if(ul_info.can_anim){
         ul_info.can_anim[item.index] = false;
         ul_info.n0[item.index] = 0;
@@ -210,15 +184,13 @@ function anim_for(item){
     }
 }
 function help_first(start_num,finish_num,index){
-    // console.log('go2',start_num,finish_num,index);
     ul_info.n0[index] = start_num;
-    // console.log(index,ul_info.n0[index],start_num,finish_num);
+
     if(start_num < finish_num){
         help_two(index);
     }
     else{
         setTimeout(function(){
-            // console.log('FINISH',index);
             ul_info.reset(index);
         },150);
     }
@@ -235,15 +207,6 @@ function help_two(index,n = 0,l = arr_sym.length){
         else{
             tmp_3 = tmp_1 + ' ' + tmp_2;
         }
-        // let obj = {
-        //     tmp1:tmp_1,
-        //     tmp2:tmp_2,
-        //     tmp4:tmp_4,
-        //     tmp3:tmp_3,
-        //     index:n,
-        //     max:l
-        // }
-        // console.log(n,obj);
             ul_info.const[index].last_item.innerHTML = tmp_3;
         setTimeout(function(){
             help_two(index,n+1,l);
@@ -251,23 +214,22 @@ function help_two(index,n = 0,l = arr_sym.length){
     }
     else{
         setTimeout(function(){
-            // console.log('go',ul_info);
             help_first(ul_info.n0[index]+1,ul_info.n1[index],index);
         },0);
     }
 }
 function init(){
-    // checkTextMargin();
         for( let i = 0; i < ul_nav_bar[0].children.length;i++){
             let obj = {};
                 obj['index'] = i;
                 obj['const'] = ul_nav_bar[0].children[i].children[0].innerHTML;
                 obj['class'] = ul_nav_bar[0].children[i].children[0].classList;
-                // obj['last_item'] = ul_nav_bar[0].children[i];
+
             ul_info.const.push(obj);
             ul_info.can_anim.push(true);
             ul_info.n0.push(0);
             ul_info.n1.push(0);
+
             ul_nav_bar[0].children[i].innerHTML = '<p>Secret</p>';
         }
 }
@@ -279,20 +241,6 @@ function checkTextMargin(){
         else{
             ul_nav_bar[0].children[i].style.color = 'white';
         }
-        // console.log(i,(ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight);
-        // let obj = {
-        //     a:ul_nav_bar[0].children[i].offsetTop,
-        //     b:window.scrollY,
-        //     c:ul_nav_bar[0].children[i].offsetHeight,
-        //     d:window.innerHeight,
-        //     mamam:function(){
-        //         // this["e"] = 'asd'
-        //         this['e'] = (this.b+this.a+this.c)/this.d;
-        //         console.log(i,this);
-        //     }
-        // }
-        // obj.mamam();
-        // console.log(i,obj);
     }
 }
 // event.clientX > wrap_avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < wrap_avatar[0].offsetParent.parentElement.offsetLeft+wrap_avatar[0].offsetParent.parentElement.offsetWidth &&

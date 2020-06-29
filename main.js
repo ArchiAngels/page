@@ -67,6 +67,9 @@ let ul_info = {
         
         this.current_anim.pop();
         main_wrap[0].children[finish_number].classList.remove('no-display');
+        // setTimeout(function(){
+        //     btn_ul.clouse();
+        // },400);
     }
 }
 let arr_sym = ['诶','比','西','迪','伊','弗','吉','尺','艾','杰','开','勒','马','娜','哦','屁','吉','儿','丝','提','伊','维','维','克','艾','德'];
@@ -108,7 +111,7 @@ window.addEventListener('mousemove',function(event){
                 btn_ul.onFocus = false;
                 if(btn_ul.class[0].innerHTML == 'Open'){
                     btn_ul.class[0].classList.add('btn-mini-hide');
-                }
+                }                
             }
         } 
         else{
@@ -140,18 +143,24 @@ window.addEventListener('click',function(event){
         btn_ul.class[0].textContent == 'Open'? btn_ul.open(): btn_ul.clouse();
     }
     if(btn_ul.class[0].innerHTML == 'Clouse'){
-        for( let i = 0; i < ul_nav_bar[0].children.length;i++){
-            if(event.target == ul_nav_bar[0].children[i]){
-                if(ul_info.can_anim[i]){
-                    if(event.target != ul_info.const[i].last_item){
-                        ul_info.const[i]['last_item'] = event.target.children[0];
-                        ul_info.current_anim.push(i);
-                        console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
-                        anim_for(ul_info.const[i]);
-                        break;
+        if(event.clientX >= ul_nav_bar[0].offsetParent.offsetLeft &&
+            event.clientX <= ul_nav_bar[0].offsetParent.offsetLeft + ul_nav_bar[0].offsetParent.offsetWidth){
+            for( let i = 0; i < ul_nav_bar[0].children.length;i++){
+                if(event.target == ul_nav_bar[0].children[i]){
+                    if(ul_info.can_anim[i]){
+                        if(event.target != ul_info.const[i].last_item){
+                            ul_info.const[i]['last_item'] = event.target.children[0];
+                            ul_info.current_anim.push(i);
+                            console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
+                            anim_for(ul_info.const[i]);
+                            break;
+                        }
                     }
                 }
             }
+        }
+        else{
+            btn_ul.clouse();
         }
     }
 })
@@ -219,6 +228,9 @@ function help_two(index,n = 0,l = arr_sym.length){
     }
 }
 function init(){
+            canvas[0].style.position = 'fixed';
+            canvas[0].style.top = 0;
+            canvas[0].style.zIndex = 2;
         for( let i = 0; i < ul_nav_bar[0].children.length;i++){
             let obj = {};
                 obj['index'] = i;
@@ -235,7 +247,7 @@ function init(){
 }
 function checkTextMargin(){
     for(let i = 0 ; i < ul_nav_bar[0].childElementCount;i++){
-        if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight >= 1.01 ){
+        if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight >= 1.04 ){
             ul_nav_bar[0].children[i].style.color = 'black';
         }
         else{

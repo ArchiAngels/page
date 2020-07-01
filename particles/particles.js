@@ -1,7 +1,7 @@
 const canv = document.querySelector('.canvas');
 const ctx = canv.getContext('2d');
 
-resize_all();
+
 
 let start_Part_count;
 let start_Live;
@@ -17,11 +17,14 @@ let infoAboutPartcilces = {
     speedX:[],
     speedY:[],
     circlesize:5,
-    maxCircle:Math.round(window.innerWidth/300)*10,
+    maxCircle:Math.round(window.innerWidth/300)*5,
     defSpeed:3,
-    positiv:[]
+    positiv:[],
+    linewidth: 1
 }
 start_Part_count = setInterval(spawnCircl,30);
+
+resize_all();
 function spawnCircl(){
     infoAboutPartcilces.coorX.push(Math.random()*canv.width);
     infoAboutPartcilces.coorY.push(Math.random()*canv.height);
@@ -48,7 +51,7 @@ function DrawLines(x,y){
                         ctx.beginPath();
                         ctx.moveTo(x[i], y[i]);
                         ctx.lineTo(x[j + 1], y[j +1]);
-                        ctx.lineWidth = 1;
+                        ctx.lineWidth = infoAboutPartcilces.linewidth;
                         ctx.strokeStyle = `rgba(175,25,144,${1-(DistanceBetwenCirc(x[i],y[i],x[j+1],y[j+1])/Distance_draw_line)})`;
                         ctx.stroke();
                     }

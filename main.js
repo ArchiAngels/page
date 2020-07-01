@@ -53,9 +53,10 @@ let ul_info = {
     const:[],
     n0:[],
     n1:[],
+    scrollFinish:false,
     reset:function(finish_number){
         // console.log('RESET OBJ',this.current_anim[0]);
-        this.const[finish_number].last_item.parentElement.style.color == 'lightcoral'?0:window.scrollTo(0,main_wrap[0].children[finish_number].offsetTop);
+        this.const[finish_number].last_item.parentElement.style.color == 'lightcoral'?this.unlockItem(finish_number):this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
         // console.log(this.const[finish_number].last_item,this.const[finish_number].last_item.parentElement,this.const[finish_number].last_item.parentElement.style.color);
         this.const[finish_number].last_item.innerHTML = this.const[finish_number].const;
         this.const[finish_number].class[0] != ''? this.const[finish_number].last_item.classList.add(`${this.const[finish_number].class[0]}`):0;
@@ -66,10 +67,35 @@ let ul_info = {
         this.const[finish_number].last_item = 0;
         
         this.current_anim.pop();
-        main_wrap[0].children[finish_number].classList.remove('no-display');
         // setTimeout(function(){
         //     btn_ul.clouse();
         // },400);
+    },
+    scrollTo:function(obj){
+        // console.log(obj);
+        if(this.scrollFinish){
+            this.scrollFinish = false;
+            this.unlockItem(obj.finish_num);
+        }
+        else{
+            window.scrollTo(0,obj.index);
+            if(obj.index > obj.item - 10 && obj.index < obj.item +10){
+                this.scrollFinish = true;
+            }
+            if(obj.index > obj.item){
+                obj.index -= 10;
+            }
+            else{
+                obj.index += 10;
+            }
+            setTimeout(function(){
+                ul_info.scrollTo(obj);
+            },1);
+        }
+    },
+    unlockItem:function(num){
+        main_wrap[0].children[num].classList.remove('no-display');
+        document.title = this.const[num].const;
     }
 }
 let arr_sym = ['诶','比','西','迪','伊','弗','吉','尺','艾','杰','开','勒','马','娜','哦','屁','吉','儿','丝','提','伊','维','维','克','艾','德'];
@@ -144,7 +170,8 @@ window.addEventListener('click',function(event){
     }
     if(btn_ul.class[0].innerHTML == 'Clouse'){
         if(event.clientX >= ul_nav_bar[0].offsetParent.offsetLeft &&
-            event.clientX <= ul_nav_bar[0].offsetParent.offsetLeft + ul_nav_bar[0].offsetParent.offsetWidth){
+            event.clientX <= ul_nav_bar[0].offsetParent.offsetLeft + ul_nav_bar[0].offsetParent.offsetWidth &&
+            event.clientY <= ul_nav_bar[0].offsetHeight + ul_nav_bar[0].offsetTop){
             for( let i = 0; i < ul_nav_bar[0].children.length;i++){
                 if(event.target == ul_nav_bar[0].children[i]){
                     if(ul_info.can_anim[i]){
@@ -231,6 +258,10 @@ function init(){
             canvas[0].style.position = 'fixed';
             canvas[0].style.top = 0;
             canvas[0].style.zIndex = 2;
+            canvas[0].style.maxWidth = "100%";
+            canvas[0].style.maxHeight = "100%";
+            canvas[0].style.overflow = "hidden";
+
         for( let i = 0; i < ul_nav_bar[0].children.length;i++){
             let obj = {};
                 obj['index'] = i;

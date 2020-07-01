@@ -38,6 +38,7 @@ let obj = {
             if(this.y + window.innerHeight*0.5 >= main_wrap[0].children[i].offsetTop &&
                 this.y + window.innerHeight*0.5 < main_wrap[0].children[i].offsetHeight + main_wrap[0].children[i].offsetTop ){
                 ul_nav_bar[0].children[i].style.color = 'lightcoral';
+                document.title = ul_nav_bar[0].children[i].innerText.includes('Secret')? document.title = ul_nav_bar[0].children[i].innerText+' 0'+i: document.title = ul_nav_bar[0].children[i].innerText;
                 break;
             }
         }
@@ -67,33 +68,27 @@ let ul_info = {
         this.const[finish_number].last_item = 0;
         
         this.current_anim.pop();
-        // setTimeout(function(){
-        //     btn_ul.clouse();
-        // },400);
     },
     scrollTo:function(obj){
-        // console.log(obj);
+        // console.log(obj,this.const[obj.finish_num]);
         if(this.scrollFinish){
+            // console.log('finish',obj);
             this.scrollFinish = false;
             this.unlockItem(obj.finish_num);
         }
         else{
             window.scrollTo(0,obj.index);
-            if(obj.index > obj.item - 10 && obj.index < obj.item +10){
+            if(obj.index >= obj.item - 5 && obj.index <= obj.item +5){ // -5 & +5 is half of speed (10)
                 this.scrollFinish = true;
             }
-            if(obj.index > obj.item){
-                obj.index -= 10;
-            }
-            else{
-                obj.index += 10;
-            }
+            obj.index > obj.item ? obj.index -= 10:obj.index += 10;
             setTimeout(function(){
                 ul_info.scrollTo(obj);
             },1);
         }
     },
     unlockItem:function(num){
+        // console.log(num,this.const[num].const);
         main_wrap[0].children[num].classList.remove('no-display');
         document.title = this.const[num].const;
     }
@@ -178,7 +173,7 @@ window.addEventListener('click',function(event){
                         if(event.target != ul_info.const[i].last_item){
                             ul_info.const[i]['last_item'] = event.target.children[0];
                             ul_info.current_anim.push(i);
-                            console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
+                            // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
                             anim_for(ul_info.const[i]);
                             break;
                         }

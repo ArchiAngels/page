@@ -19,7 +19,7 @@ const btn_ul = {
                 checkTextMargin();
                 obj.fresh_data();
             },400);
-        },
+    },
     clouse:function (){
             this.class[0].innerHTML = 'Open';
             this.class[0].style.transform = 'rotate(-360deg)';
@@ -29,7 +29,30 @@ const btn_ul = {
                     ul_nav_bar[0].children[i].classList.add('hide');
                 }
             this.onFocus == false?this.class[0].classList.add('btn-mini-hide'):0;
+    },
+    clickOnChild:function(event){
+        console.log(obj.itIsPhone,': PHONE?');
+        if(event.clientX >= ul_nav_bar[0].offsetParent.offsetLeft &&
+            event.clientX <= ul_nav_bar[0].offsetParent.offsetLeft + ul_nav_bar[0].offsetParent.offsetWidth &&
+            event.clientY <= ul_nav_bar[0].offsetHeight + ul_nav_bar[0].offsetTop){
+            for( let i = 0; i < ul_nav_bar[0].children.length;i++){
+                if(event.target == ul_nav_bar[0].children[i]){
+                    if(ul_info.can_anim[i]){
+                        if(event.target != ul_info.const[i].last_item){
+                            ul_info.const[i]['last_item'] = event.target.children[0];
+                            ul_info.current_anim.push(i);
+                            // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
+                            anim_for(ul_info.const[i]);
+                            break;
+                        }
+                    }
+                }
+            }
         }
+        // else{
+        //     btn_ul.clouse();
+        // }
+    }
 }
 let obj = {
     y:window.scrollY,
@@ -46,7 +69,9 @@ let obj = {
     fresh_data:function(){
         this.y = window.scrollY;
         this.change_color();
-    }
+    },
+    itIsPhone:false
+    
 }
 let ul_info = {
     current_anim:[],
@@ -56,6 +81,7 @@ let ul_info = {
     n1:[],
     scrollFinish:false,
     reset:function(finish_number){
+        btn_ul.clouse();
         // console.log('RESET OBJ',this.current_anim[0]);
         this.const[finish_number].last_item.parentElement.style.color == 'lightcoral'?this.unlockItem(finish_number):this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
         // console.log(this.const[finish_number].last_item,this.const[finish_number].last_item.parentElement,this.const[finish_number].last_item.parentElement.style.color);
@@ -146,7 +172,15 @@ window.addEventListener('mousemove',function(event){
                 btn_ul.onFocus = false;
             }
             btn_ul.class[0].classList.remove('btn-mini-hide');
-        }       
+        }
+    if(obj.itIsPhone){
+        // if(event.target == btn_ul.class[0]){
+        //     btn_ul.class[0].textContent == 'Open'? btn_ul.open(): btn_ul.clouse();
+        // }
+        if(btn_ul.class[0].innerHTML == 'Clouse'){
+            btn_ul.clickOnChild(event);
+        }  
+    }      
 });
 function css_class_js(bool){
     if(bool){
@@ -163,31 +197,15 @@ function css_class_js(bool){
     }
 }
 window.addEventListener('click',function(event){
+    
     if(event.target == btn_ul.class[0]){
         btn_ul.class[0].textContent == 'Open'? btn_ul.open(): btn_ul.clouse();
     }
     if(btn_ul.class[0].innerHTML == 'Clouse'){
-        if(event.clientX >= ul_nav_bar[0].offsetParent.offsetLeft &&
-            event.clientX <= ul_nav_bar[0].offsetParent.offsetLeft + ul_nav_bar[0].offsetParent.offsetWidth &&
-            event.clientY <= ul_nav_bar[0].offsetHeight + ul_nav_bar[0].offsetTop){
-            for( let i = 0; i < ul_nav_bar[0].children.length;i++){
-                if(event.target == ul_nav_bar[0].children[i]){
-                    if(ul_info.can_anim[i]){
-                        if(event.target != ul_info.const[i].last_item){
-                            ul_info.const[i]['last_item'] = event.target.children[0];
-                            ul_info.current_anim.push(i);
-                            // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
-                            anim_for(ul_info.const[i]);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        else{
-            btn_ul.clouse();
-        }
-    }
+        if(!obj.itIsPhone){
+            btn_ul.clickOnChild(event);
+        }  
+    } 
 })
 window.addEventListener('scroll',function(){
     tmp_a = window.scrollY > btn_ul.class[0].offsetHeight;
@@ -253,6 +271,7 @@ function help_two(index,n = 0,l = arr_sym.length){
     }
 }
 function init(){
+        window.innerWidth < 900?obj.itIsPhone = true:0;
             canvas[0].style.position = 'fixed';
             canvas[0].style.top = 0;
             canvas[0].style.zIndex = 2;

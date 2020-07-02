@@ -233,6 +233,9 @@ body{
     
     
 }
+.my_skills ul{
+    padding: 0;
+}
 .my_skills ul li{
     font-size:2rem;
     list-style-type: none;

@@ -72,14 +72,17 @@ let ul_info = {
     scrollTo:function(obj){
         // console.log(obj,this.const[obj.finish_num]);
         if(this.scrollFinish){
-            // console.log('finish',obj);
+            console.log('finish',obj,main_wrap[0].children[obj.finish_num].offsetTop,window.scrollY);
+            window.scrollTo(0,main_wrap[0].children[obj.finish_num].offsetTop);
+            console.log('finish',obj,main_wrap[0].children[obj.finish_num].offsetTop,window.scrollY);
             this.scrollFinish = false;
             this.unlockItem(obj.finish_num);
         }
         else{
             window.scrollTo(0,obj.index);
-            if(obj.index >= obj.item - 5 && obj.index <= obj.item +5){ // -5 & +5 is half of speed (10)
+            if(obj.index >= obj.item - 5 && obj.index <= obj.item +5){ // -3 & +3 is half of speed (10)
                 this.scrollFinish = true;
+
             }
             obj.index > obj.item ? obj.index -= 10:obj.index += 10;
             setTimeout(function(){

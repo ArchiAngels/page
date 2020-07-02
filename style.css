@@ -29,6 +29,11 @@
 }   
 @font-face{
     font-family: 'Montserrat';
+    src:url("./Fonts/Montserrat/Montserrat-Light.ttf");  
+    font-weight: 300;
+}
+@font-face{
+    font-family: 'Montserrat';
     src:url("./Fonts/Montserrat/Montserrat-Thin.ttf");  
     font-weight: 100;
 }
@@ -42,11 +47,7 @@
     src:url("./Fonts/Montserrat/Montserrat-SemiBold.ttf");  
     font-weight: 700;
 }
-@font-face{
-    font-family: 'Montserrat';
-    src:url("./Fonts/Montserrat/Montserrat-Light.ttf");  
-    font-weight: 300;
-}
+
 body{
     /* height:100%; */
     max-width:100%;
@@ -127,7 +128,8 @@ body{
     /* min-width:80vw; */
     max-width:1600px;
     /* min-height:250vh; */
-    border:1px solid green;
+    /* border:1px solid green; */
+    overflow: hidden;
     /* padding: 0 2rem 0 2rem; */
 }
 .nav-bar{
@@ -215,10 +217,50 @@ body{
 
 }
 .test1{
-    width:100%;
+    /* width:100%; */
     height:100vh;
     transition: filter 0.5s linear;
     /* border:1px solid yellow; */
+}
+/* .who_i_am .study{
+    color:lime;
+} */
+.my_skills , .who_i_am{
+    padding: 0 1rem;
+}
+.my_skills span{
+    color:palevioletred;
+    
+    
+}
+.my_skills ul li{
+    font-size:2rem;
+    list-style-type: none;
+    transition: color 0.3s linear;
+}
+.html:hover{
+    color:#fb2f00;
+}
+.ps:hover{
+    color:#05014d;
+}
+.css:hover{
+    color:#1a6fb4;
+}
+.js:hover{
+    color:#efd81d;
+}
+.git:hover{
+    color:#24292e;
+}
+.sql:hover{
+    color:#005e86;
+}
+.node:hover{
+    color:#78b55e;
+}
+.who_i_am span{
+    color:rosybrown;
 }
 .my-avatar-bgc{
     background-image: url("imgs/photo-1477346611705-65d1883cee1e.jpg");

@@ -31,15 +31,16 @@ const btn_ul = {
             this.onFocus == false?this.class[0].classList.add('btn-mini-hide'):0;
     },
     clickOnChild:function(event){
+        // console.log(event.target);
         console.log(obj.itIsPhone,': PHONE?');
         if(event.clientX >= ul_nav_bar[0].offsetParent.offsetLeft &&
             event.clientX <= ul_nav_bar[0].offsetParent.offsetLeft + ul_nav_bar[0].offsetParent.offsetWidth &&
             event.clientY <= ul_nav_bar[0].offsetHeight + ul_nav_bar[0].offsetTop){
             for( let i = 0; i < ul_nav_bar[0].children.length;i++){
-                if(event.target == ul_nav_bar[0].children[i]){
+                if(event.target == ul_nav_bar[0].children[i] || event.target == ul_nav_bar[0].children[i].children[0]){
                     if(ul_info.can_anim[i]){
                         if(event.target != ul_info.const[i].last_item){
-                            ul_info.const[i]['last_item'] = event.target.children[0];
+                            ul_info.const[i]['last_item'] = event.target.tagName == 'P'?ul_info.const[i]['last_item'] = event.target:ul_info.const[i]['last_item'] = event.target.children[0];
                             ul_info.current_anim.push(i);
                             // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
                             anim_for(ul_info.const[i]);
@@ -98,9 +99,9 @@ let ul_info = {
     scrollTo:function(obj){
         // console.log(obj,this.const[obj.finish_num]);
         if(this.scrollFinish){
-            console.log('finish',obj,main_wrap[0].children[obj.finish_num].offsetTop,window.scrollY);
+            // console.log('finish',obj,main_wrap[0].children[obj.finish_num].offsetTop,window.scrollY);
             window.scrollTo(0,main_wrap[0].children[obj.finish_num].offsetTop);
-            console.log('finish',obj,main_wrap[0].children[obj.finish_num].offsetTop,window.scrollY);
+            // console.log('finish',obj,main_wrap[0].children[obj.finish_num].offsetTop,window.scrollY);
             this.scrollFinish = false;
             this.unlockItem(obj.finish_num);
         }
@@ -134,6 +135,7 @@ let dis_pers = 25;
 init();
 
 window.addEventListener('mousemove',function(event){
+    // console.log(event.target);
     if(main_wrap[0].children[0].className.includes('no-display')){}
     else{
         if(event.clientX > avatar[0].offsetParent.parentElement.offsetLeft && 

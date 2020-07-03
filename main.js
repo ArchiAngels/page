@@ -87,13 +87,14 @@ const btn_ul = {
             document.body.style.overflow = 'hidden';
         },
         HideNav:function(num){
-            document.getElementsByClassName('content')[0].style.zIndex = '3'
+            
             btn_ul.class[0].offsetParent.style.position = 'fixed';
             btn_ul.class[0].offsetParent.style.zIndex = '2';
             this.class[0].style.opacity = '1';
             this.showDrakScene = false;
             setTimeout(function(){
                 document.getElementsByClassName('wrap-content')[0].style.opacity = '0';
+                document.getElementsByClassName('content')[0].style.zIndex = '3'
             },2000);
             setTimeout(function(){
                 document.getElementsByClassName('wrap-content')[0].style.opacity = '1';

@@ -7,6 +7,7 @@ const main_wrap = document.getElementsByClassName('main-content');
 const btn_ul = {
     class:document.getElementsByClassName('btn-nav-bar'),
     onFocus:false,
+    hideBtnUl: false,
     open:function (){
             this.class[0].innerHTML = 'Clouse';
             this.class[0].style.borderRadius = '0%';
@@ -16,7 +17,7 @@ const btn_ul = {
                     ul_nav_bar[0].children[i].classList.add('nav-bar-ul-li');                
                 }
             setTimeout(function(){
-                checkTextMargin();
+                btn_ul.checkTextMargin();
                 obj.fresh_data();
             },400);
     },
@@ -28,31 +29,79 @@ const btn_ul = {
                     ul_nav_bar[0].children[i].classList.remove('nav-bar-ul-li');
                     ul_nav_bar[0].children[i].classList.add('hide');
                 }
-            this.onFocus == false?this.class[0].classList.add('btn-mini-hide'):0;
+            this.onFocus == false?this.hideBtnUl == true?this.class[0].classList.add('btn-mini-hide'):0:0;
     },
     clickOnChild:function(event){
-        // console.log(event.target);
-        console.log(obj.itIsPhone,': PHONE?');
-        if(event.clientX >= ul_nav_bar[0].offsetParent.offsetLeft &&
-            event.clientX <= ul_nav_bar[0].offsetParent.offsetLeft + ul_nav_bar[0].offsetParent.offsetWidth &&
-            event.clientY <= ul_nav_bar[0].offsetHeight + ul_nav_bar[0].offsetTop){
-            for( let i = 0; i < ul_nav_bar[0].children.length;i++){
-                if(event.target == ul_nav_bar[0].children[i] || event.target == ul_nav_bar[0].children[i].children[0]){
-                    if(ul_info.can_anim[i]){
-                        if(event.target != ul_info.const[i].last_item){
-                            ul_info.const[i]['last_item'] = event.target.tagName == 'P'?ul_info.const[i]['last_item'] = event.target:ul_info.const[i]['last_item'] = event.target.children[0];
-                            ul_info.current_anim.push(i);
-                            // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
-                            anim_for(ul_info.const[i]);
-                            break;
+            // console.log(event.target);
+            // console.log(obj.itIsPhone,': PHONE?');
+            if(event.clientX >= ul_nav_bar[0].offsetParent.offsetLeft &&
+                event.clientX <= ul_nav_bar[0].offsetParent.offsetLeft + ul_nav_bar[0].offsetParent.offsetWidth &&
+                event.clientY <= ul_nav_bar[0].offsetHeight + ul_nav_bar[0].offsetTop){
+                for( let i = 0; i < ul_nav_bar[0].children.length;i++){
+                    if(event.target == ul_nav_bar[0].children[i] || event.target == ul_nav_bar[0].children[i].children[0]){
+                        if(ul_info.can_anim[i]){
+                            if(event.target != ul_info.const[i].last_item){
+                                ul_info.const[i]['last_item'] = event.target.tagName == 'P'?ul_info.const[i]['last_item'] = event.target:ul_info.const[i]['last_item'] = event.target.children[0];
+                                ul_info.current_anim.push(i);
+                                // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
+                                btn_ul.html.showDrakScene?  btn_ul.html.HideNav(i):anim_for(ul_info.const[i]);;
+                                break;
+                            }
                         }
                     }
                 }
             }
+            else{
+                btn_ul.clouse();
+            }
+    },
+    checkTextMargin:function(){
+            for(let i = 0 ; i < ul_nav_bar[0].childElementCount;i++){
+                if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight >= 1.04 ){
+                    ul_nav_bar[0].children[i].style.color = 'black';
+                }
+                else{
+                    ul_nav_bar[0].children[i].style.color = 'white';
+                }
+            }
+    },
+    html:{
+        class:document.getElementsByClassName('DarkScene'),
+        showDrakScene:true,
+        showNav:function(){
+            btn_ul.class[0].offsetParent.style.position = 'absolute';
+            btn_ul.class[0].offsetParent.style.zIndex = '6';
+            btn_ul.open();
+            this.class[0].style.textAlign = 'center';
+            // this.class[0].style.display = 'flex';
+            this.class[0].classList.add('flex-column-center-between');
+            this.class[0].style.color = '#fff';
+            this.class[0].style.transition = 'opacity 2s linear';
+            this.class[0].style.justifyContent = 'flex-end';
+            this.class[0].style.fontSize = '2rem';
+            
+            this.class[0].innerHTML = `<p>Please!<br><span style = 'color:violet'>Use</span> this nav-bar<br><--<br> for <span style = 'color:#efd81d' >best</span> experience<p><br>
+            👑`;
+            this.class[0].children[0].style.margin = '0';
+            this.class[0].children[1].style.margin = '0 0 1rem 0';
+            document.body.style.overflow = 'hidden';
+        },
+        HideNav:function(num){
+            document.getElementsByClassName('content')[0].style.zIndex = '3'
+            btn_ul.class[0].offsetParent.style.position = 'fixed';
+            btn_ul.class[0].offsetParent.style.zIndex = '2';
+            this.class[0].style.opacity = '1';
+            this.showDrakScene = false;
+            setTimeout(function(){
+                document.getElementsByClassName('wrap-content')[0].style.opacity = '0';
+            },2000);
+            setTimeout(function(){
+                document.getElementsByClassName('wrap-content')[0].style.opacity = '1';
+                document.body.style.overflow = '';
+                btn_ul.html.class[0].remove();
+                anim_for(ul_info.const[num]);
+            },3000);
         }
-        // else{
-        //     btn_ul.clouse();
-        // }
     }
 }
 let obj = {
@@ -84,8 +133,9 @@ let ul_info = {
     reset:function(finish_number){
         btn_ul.clouse();
         // console.log('RESET OBJ',this.current_anim[0]);
-        this.const[finish_number].last_item.parentElement.style.color == 'lightcoral'?this.unlockItem(finish_number):this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
+        // this.const[finish_number].last_item.parentElement.style.color == 'lightcoral'?this.unlockItem(finish_number):this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
         // console.log(this.const[finish_number].last_item,this.const[finish_number].last_item.parentElement,this.const[finish_number].last_item.parentElement.style.color);
+        this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
         this.const[finish_number].last_item.innerHTML = this.const[finish_number].const;
         this.const[finish_number].class[0] != ''? this.const[finish_number].last_item.classList.add(`${this.const[finish_number].class[0]}`):0;
         // console.log(finish_number);
@@ -107,7 +157,7 @@ let ul_info = {
         }
         else{
             window.scrollTo(0,obj.index);
-            if(obj.index >= obj.item - 5 && obj.index <= obj.item +5){ // -3 & +3 is half of speed (10)
+            if(obj.index >= obj.item - 5 && obj.index <= obj.item +5){ // -5 & +5 is half of speed (10)
                 this.scrollFinish = true;
 
             }
@@ -125,7 +175,6 @@ let ul_info = {
 }
 let arr_sym = ['诶','比','西','迪','伊','弗','吉','尺','艾','杰','开','勒','马','娜','哦','屁','吉','儿','丝','提','伊','维','维','克','艾','德'];
 // let arr_sym2 = ['💥','😾','👻','🌈','🌍','🎄','🎨','🎋','🍭','🍪','🍑','🦊','🐅','🤔','👑','📚','💰','🍍','🦋','🍁','🦆'];
-let tmp_a = window.scrollY > btn_ul.class[0].offsetHeight;
 const mouse_pos ={
     x:0,
     y:0
@@ -150,35 +199,32 @@ window.addEventListener('mousemove',function(event){
         }
         else{css_class_js(false);}
     }
-        if(tmp_a){
-            if(event.target == btn_ul.class[0]){
-                btn_ul.onFocus = true;
-                for(let i = 0; i < btn_ul.class[0].classList.length;i++){
-                    if(btn_ul.class[0].classList[i] == 'btn-mini-hide'){
-                        btn_ul.class[0].classList.remove('btn-mini-hide');
-                    }
+    if(btn_ul.hideBtnUl){
+        if(event.target == btn_ul.class[0]){
+            btn_ul.onFocus = true;
+            for(let i = 0; i < btn_ul.class[0].classList.length;i++){
+                if(btn_ul.class[0].classList[i] == 'btn-mini-hide'){
+                    btn_ul.class[0].classList.remove('btn-mini-hide');
                 }
             }
-            else{
-                btn_ul.onFocus = false;
-                if(btn_ul.class[0].innerHTML == 'Open'){
-                    btn_ul.class[0].classList.add('btn-mini-hide');
-                }                
-            }
-        } 
-        else{
-            if(event.target == btn_ul.class[0]){
-                btn_ul.onFocus = true;
-            }
-            else{
-                btn_ul.onFocus = false;
-            }
-            btn_ul.class[0].classList.remove('btn-mini-hide');
         }
+        else{
+            btn_ul.onFocus = false;
+            if(btn_ul.class[0].innerHTML == 'Open'){
+                btn_ul.class[0].classList.add('btn-mini-hide');
+            }                
+        }
+    } 
+    else{
+        if(event.target == btn_ul.class[0]){
+            btn_ul.onFocus = true;
+        }
+        else{
+            btn_ul.onFocus = false;
+        }
+        btn_ul.class[0].classList.remove('btn-mini-hide');
+    }
     if(obj.itIsPhone){
-        // if(event.target == btn_ul.class[0]){
-        //     btn_ul.class[0].textContent == 'Open'? btn_ul.open(): btn_ul.clouse();
-        // }
         if(btn_ul.class[0].innerHTML == 'Clouse'){
             btn_ul.clickOnChild(event);
         }  
@@ -199,7 +245,6 @@ function css_class_js(bool){
     }
 }
 window.addEventListener('click',function(event){
-    
     if(event.target == btn_ul.class[0]){
         btn_ul.class[0].textContent == 'Open'? btn_ul.open(): btn_ul.clouse();
     }
@@ -210,8 +255,8 @@ window.addEventListener('click',function(event){
     } 
 })
 window.addEventListener('scroll',function(){
-    tmp_a = window.scrollY > btn_ul.class[0].offsetHeight;
-    checkTextMargin();
+    btn_ul.hideBtnUl = window.scrollY > btn_ul.class[0].offsetHeight;
+    btn_ul.checkTextMargin();
         if(window.scrollY >= window.innerHeight*2){
             canvas[0].style.position = '';
             canvas[0].style.top = (window.innerHeight*2)+'px';
@@ -251,17 +296,17 @@ function help_first(start_num,finish_num,index){
 }
 function help_two(index,n = 0,l = arr_sym.length){
     if(n < l){
-        let tmp_1,tmp_2,tmp_3,tmp_4;
-            tmp_1 = ul_info.const[index].last_item.innerHTML.slice(0,ul_info.n0[index]);
-            tmp_2 = ul_info.const[index].last_item.innerHTML.slice(ul_info.n0[index]+1,ul_info.const[index].last_item.innerHTML.length);
-            tmp_4 = arr_sym[(Math.round(Math.random()*(arr_sym.length-1)))];
+        let leftPart,RightPart,Finish,ChangedElem;
+        leftPart = ul_info.const[index].last_item.innerHTML.slice(0,ul_info.n0[index]);
+        RightPart = ul_info.const[index].last_item.innerHTML.slice(ul_info.n0[index]+1,ul_info.const[index].last_item.innerHTML.length);
+            ChangedElem = arr_sym[(Math.round(Math.random()*(arr_sym.length-1)))];
         if(ul_info.const[index].last_item.innerHTML[ul_info.n0[index]] != ' '){
-            tmp_3 = `${tmp_1}${tmp_4}${tmp_2}`;
+            Finish = `${leftPart}${ChangedElem}${RightPart}`;
         }
         else{
-            tmp_3 = tmp_1 + ' ' + tmp_2;
+            Finish = leftPart + ' ' + RightPart;
         }
-            ul_info.const[index].last_item.innerHTML = tmp_3;
+            ul_info.const[index].last_item.innerHTML = Finish;
         setTimeout(function(){
             help_two(index,n+1,l);
         },0);
@@ -273,6 +318,7 @@ function help_two(index,n = 0,l = arr_sym.length){
     }
 }
 function init(){
+        window.scrollTo(0,0);
         window.innerWidth < 900?obj.itIsPhone = true:0;
             canvas[0].style.position = 'fixed';
             canvas[0].style.top = 0;
@@ -294,16 +340,7 @@ function init(){
 
             ul_nav_bar[0].children[i].innerHTML = '<p>Secret</p>';
         }
-}
-function checkTextMargin(){
-    for(let i = 0 ; i < ul_nav_bar[0].childElementCount;i++){
-        if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight >= 1.04 ){
-            ul_nav_bar[0].children[i].style.color = 'black';
-        }
-        else{
-            ul_nav_bar[0].children[i].style.color = 'white';
-        }
-    }
+        btn_ul.html.showNav();
 }
 // event.clientX > wrap_avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < wrap_avatar[0].offsetParent.parentElement.offsetLeft+wrap_avatar[0].offsetParent.parentElement.offsetWidth &&
 // event.clientY > wrap_avatar[0].offsetParent.parentElement.offsetTop && event.clientY < wrap_avatar[0].offsetParent.parentElement.offsetTop+wrap_avatar[0].offsetParent.parentElement.offsetHeight

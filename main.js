@@ -6,6 +6,7 @@ const canvas = document.getElementsByClassName('canvas');
 const main_wrap = document.getElementsByClassName('main-content');
 const btn_ul = {
     class:document.getElementsByClassName('btn-nav-bar'),
+    darkMode:false,
     onFocus:false,
     hideBtnUl: false,
     open:function (){
@@ -39,15 +40,19 @@ const btn_ul = {
                 event.clientY <= ul_nav_bar[0].offsetHeight + ul_nav_bar[0].offsetTop){
                 for( let i = 0; i < ul_nav_bar[0].children.length;i++){
                     if(event.target == ul_nav_bar[0].children[i] || event.target == ul_nav_bar[0].children[i].children[0]){
-                        if(ul_info.can_anim[i]){
-                            if(event.target != ul_info.const[i].last_item){
-                                ul_info.const[i]['last_item'] = event.target.tagName == 'P'?ul_info.const[i]['last_item'] = event.target:ul_info.const[i]['last_item'] = event.target.children[0];
-                                ul_info.current_anim.push(i);
-                                // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
-                                btn_ul.html.showDrakScene?  btn_ul.html.HideNav(i):anim_for(ul_info.const[i]);;
-                                break;
+                        ul_nav_bar[0].children[i].className.includes('changeMode')?this.ChangeMod():continueAnimation();
+                        function continueAnimation(){
+                            if(ul_info.can_anim[i]){
+                                if(event.target != ul_info.const[i].last_item){
+                                    // console.log(event.target,event.target.children[0]);
+                                    ul_info.const[i]['last_item'] = event.target.tagName == 'P'?ul_info.const[i]['last_item'] = event.target:ul_info.const[i]['last_item'] = event.target.children[0];
+                                    ul_info.current_anim.push(i);
+                                    // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
+                                    btn_ul.html.showDrakScene?  btn_ul.html.HideNav(i):anim_for(ul_info.const[i]);
+                                }
                             }
                         }
+                        break;
                     }
                 }
             }
@@ -57,13 +62,32 @@ const btn_ul = {
     },
     checkTextMargin:function(){
             for(let i = 0 ; i < ul_nav_bar[0].childElementCount;i++){
-                if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight >= 1.04 ){
-                    ul_nav_bar[0].children[i].style.color = 'black';
+                if(!this.darkMode){
+                    if( (ul_nav_bar[0].children[i].offsetTop+window.scrollY+ul_nav_bar[0].children[i].offsetHeight)/window.innerHeight >= 1.04 ){
+                        ul_nav_bar[0].children[i].style.color = 'black';
+                    }
+                    else{
+                        ul_nav_bar[0].children[i].style.color = 'white';
+                    }
                 }
                 else{
                     ul_nav_bar[0].children[i].style.color = 'white';
                 }
             }
+    },
+    ChangeMod:function (){
+        this.darkMode == false? this.darkMode = true:this.darkMode = false; 
+        this.darkMode == false? document.getElementsByClassName('changeMode')[0].innerHTML = 'DarkMode (off)':document.getElementsByClassName('changeMode')[0].innerHTML = 'DarkMode (on)';
+        // console.log(this.darkMode,this.html.showDrakScene);
+        this.darkMode == false? document.body.style.backgroundColor = '#dae2f8':document.body.style.backgroundColor = '#141517';
+        this.html.showDrakScene == true?0:this.darkMode == false? document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '1':document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '0.5';
+        for(let i =0; i < main_wrap[0].childElementCount;i++){
+            // i == 0?document.getElementsByClassName('test1')[i].style.opacity = 0.5:0;
+            this.darkMode == false? document.getElementsByClassName('test1')[0].style.opacity = 1:document.getElementsByClassName('test1')[0].style.opacity = 0.5;
+            this.darkMode == false? document.getElementsByClassName('test1')[i].style.color = 'black': document.getElementsByClassName('test1')[i].style.color = 'white';
+        }
+        this.checkTextMargin();
+        obj.fresh_data();
     },
     html:{
         class:document.getElementsByClassName('DarkScene'),
@@ -71,7 +95,10 @@ const btn_ul = {
         showNav:function(){
             btn_ul.class[0].offsetParent.style.position = 'absolute';
             btn_ul.class[0].offsetParent.style.zIndex = '6';
-            btn_ul.open();
+            setTimeout(hui,500);
+            function hui(){
+                btn_ul.open();
+            }
             this.class[0].style.textAlign = 'center';
             // this.class[0].style.display = 'flex';
             this.class[0].classList.add('flex-column-center-between');
@@ -95,6 +122,8 @@ const btn_ul = {
             setTimeout(function(){
                 document.getElementsByClassName('wrap-content')[0].style.opacity = '0';
                 document.getElementsByClassName('content')[0].style.zIndex = '3'
+                this.showDrakScene == true?0:btn_ul.darkMode == false? document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '1'
+                    :document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '0.5';
             },2000);
             setTimeout(function(){
                 document.getElementsByClassName('wrap-content')[0].style.opacity = '1';
@@ -107,11 +136,33 @@ const btn_ul = {
 }
 let obj = {
     y:window.scrollY,
+    noScroll:false,
+    last_elem:ul_nav_bar[0].children[0],
     change_color:function(){
         for(let i = 0; i < main_wrap[0].childElementCount;i++){
             if(this.y + window.innerHeight*0.5 >= main_wrap[0].children[i].offsetTop &&
                 this.y + window.innerHeight*0.5 < main_wrap[0].children[i].offsetHeight + main_wrap[0].children[i].offsetTop ){
                 ul_nav_bar[0].children[i].style.color = 'lightcoral';
+                // !btn_ul.html.showDrakScene?main_wrap[0].children[i].classList.remove('no-display'):0;
+                if(!btn_ul.html.showDrakScene){
+                        obj.last_elem != ul_nav_bar[0].children[i]?new_last():0;
+                    function new_last(){
+                        obj.last_elem = ul_nav_bar[0].children[i];
+                        // console.log(obj);
+                        setTimeout(auto_secret,150);
+                    }
+                    function auto_secret(){
+                        // console.log(ul_nav_bar[0].children[i],ul_nav_bar[0].children[i].children[0]);
+                        ul_info.const[i]['last_item'] = ul_nav_bar[0].children[i].children[0];
+                        ul_info.current_anim.push(i);
+                        // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
+                        obj.noScroll = true;
+                        anim_for(ul_info.const[i]);
+                        // ul_info.unlockItem(i);
+                        
+                    }
+                }
+                // document.title = ul_nav_bar[0].children[i].innerText.includes('Secret')? testt(): document.title = ul_nav_bar[0].children[i].innerText;
                 document.title = ul_nav_bar[0].children[i].innerText.includes('Secret')? document.title = ul_nav_bar[0].children[i].innerText+' 0'+i: document.title = ul_nav_bar[0].children[i].innerText;
                 break;
             }
@@ -121,8 +172,7 @@ let obj = {
         this.y = window.scrollY;
         this.change_color();
     },
-    itIsPhone:false
-    
+    itIsPhone:false,    
 }
 let ul_info = {
     current_anim:[],
@@ -136,15 +186,15 @@ let ul_info = {
         // console.log('RESET OBJ',this.current_anim[0]);
         // this.const[finish_number].last_item.parentElement.style.color == 'lightcoral'?this.unlockItem(finish_number):this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
         // console.log(this.const[finish_number].last_item,this.const[finish_number].last_item.parentElement,this.const[finish_number].last_item.parentElement.style.color);
-        this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
+        obj.noScroll?this.unlockItem(finish_number):this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
         this.const[finish_number].last_item.innerHTML = this.const[finish_number].const;
-        this.const[finish_number].class[0] != ''? this.const[finish_number].last_item.classList.add(`${this.const[finish_number].class[0]}`):0;
+        this.const[finish_number].class[0] != undefined? this.const[finish_number].last_item.classList.add(`${this.const[finish_number].class[0]}`):0;
         // console.log(finish_number);
         this.can_anim[finish_number] = true;
         this.n0[finish_number] = 0;
         this.n1[finish_number] = 0;
         this.const[finish_number].last_item = 0;
-        
+        obj.noScroll = false;
         this.current_anim.pop();
     },
     scrollTo:function(obj){
@@ -275,13 +325,19 @@ window.addEventListener('scroll',function(){
     obj.fresh_data();
 })
 function anim_for(item){
-    if(ul_info.can_anim){
-        ul_info.can_anim[item.index] = false;
-        ul_info.n0[item.index] = 0;
-        ul_info.n1[item.index] = item.last_item.innerHTML.length;
-        ul_info.const[item.index].class[0] != ''? ul_info.const[item.index].last_item.classList.remove(`${ul_info.const[item.index].class[0]}`):0;
-        help_first(ul_info.n0[item.index],ul_info.n1[item.index],item.index);
+    if(obj.noScroll){
+        ul_info.reset(item.index);
     }
+    else{
+        if(ul_info.can_anim){
+            ul_info.can_anim[item.index] = false;
+            ul_info.n0[item.index] = 0;
+            ul_info.n1[item.index] = item.last_item.innerHTML.length;
+            ul_info.const[item.index].class[0] != ''? ul_info.const[item.index].last_item.classList.remove(`${ul_info.const[item.index].class[0]}`):0;
+            help_first(ul_info.n0[item.index],ul_info.n1[item.index],item.index);
+        }
+    }
+    
 }
 function help_first(start_num,finish_num,index){
     ul_info.n0[index] = start_num;
@@ -339,9 +395,19 @@ function init(){
             ul_info.n0.push(0);
             ul_info.n1.push(0);
 
+            // console.log(ul_nav_bar[0].children[i].className);
             ul_nav_bar[0].children[i].innerHTML = '<p>Secret</p>';
+            // ul_nav_bar[0].children[i].innerHTML = '<p>Secret</p>';
+            main_wrap[0].children[i].classList.add('no-display');
         }
-        btn_ul.html.showNav();
+            let child = document.createElement('P');
+            child.classList.add('hide');
+            child.classList.add('changeMode');
+            child.style.marginLeft = obj.itIsPhone?'-2rem':'-4rem';
+            child.innerHTML = `DarkMode (off)`;
+            ul_nav_bar[0].appendChild(child);
+            btn_ul.html.showNav();
+        // btn_ul.html.HideNav(0);
 }
 // event.clientX > wrap_avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < wrap_avatar[0].offsetParent.parentElement.offsetLeft+wrap_avatar[0].offsetParent.parentElement.offsetWidth &&
 // event.clientY > wrap_avatar[0].offsetParent.parentElement.offsetTop && event.clientY < wrap_avatar[0].offsetParent.parentElement.offsetTop+wrap_avatar[0].offsetParent.parentElement.offsetHeight

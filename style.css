@@ -136,7 +136,7 @@ body{
     max-width:1600px;
     /* min-height:250vh; */
     /* border:1px solid green; */
-    overflow: hidden;
+    /* overflow-y: hidden; */
     /* padding: 0 2rem 0 2rem; */
 }
 .nav-bar{
@@ -227,6 +227,9 @@ body{
     height:100vh;
     transition: filter 0.5s linear;
     /* border:1px solid yellow; */
+}
+.test1:nth-last-child(1){
+    overflow-y: hidden;
 }
 /* .who_i_am .study{
     color:lime;
@@ -405,7 +408,7 @@ body{
 .my-avatar:hover{
     cursor: pointer;
 }
-.test_p::before{
+/* .test_p::before{
     position:absolute;
     margin: 0;
     padding: 0;
@@ -413,7 +416,7 @@ body{
     font-size:inherit;
     color:red;
     overflow: hidden;
-}
+} */
 .block-wrap{
     border:1px solid green;
 }

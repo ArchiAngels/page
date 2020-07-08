@@ -4,6 +4,37 @@ const avatar = document.getElementsByClassName('my-avatar');
 const ul_nav_bar = document.getElementsByClassName('ul-nav-bar');
 const canvas = document.getElementsByClassName('canvas');
 const main_wrap = document.getElementsByClassName('main-content');
+const ddd_card = {
+    class:document.getElementsByClassName('wrap-spec'),
+    test:document.getElementsByClassName('test1'),
+    deg:90,
+    // window.y >= this.offsetTop+offsetHeight = +90deg
+    whic_item:function(){
+        for(let i = 0 ; i < this.test.length-1;i++){
+            if(i > 0){
+                let tmp = this.test[i-1].offsetTop + this.test[i-1].offsetHeight;
+                let tmp2= this.test[i].offsetTop + this.test[i].offsetHeight;
+                if(window.scrollY >= this.test[i].offsetTop && window.scrollY <= this.test[i].offsetTop + this.test[i].offsetHeight){
+                    // console.log(`Scroll i-1:${window.scrollY} top+Height:${this.test[i].offsetTop + this.test[i].offsetHeight} ${((window.scrollY-tmp)/(this.test[i].offsetTop + this.test[i].offsetHeight))*90}`);
+                    // console.log(window.scrollY,tmp,tmp2,((window.scrollY-tmp)/(tmp2-tmp)*90));
+                    // console.log(this.class[i-1],i-1);
+                    this.class[i-1].style.transform = `rotateX(${(((window.scrollY-tmp)/(tmp2-tmp))*90)}deg)`;
+                    // this.class[i].style.transform = `rotateX(${(window.scrollY/(this.test[i].offsetTop + this.test[i].offsetHeight))*90}deg) `;
+                    this.class[i].style.transform = `rotateX(${-90+((window.scrollY-tmp)/(tmp2-tmp)*90)}deg) scale(${(window.scrollY-tmp)/(tmp2-tmp)})`;
+                    break;
+                }
+            }
+            else{
+                if(window.scrollY >= this.test[i].offsetTop && window.scrollY <= this.test[i].offsetTop + this.test[i].offsetHeight){
+                    // console.log(`Scroll:${window.scrollY} top+Height:${this.test[i].offsetTop + this.test[i].offsetHeight} ${(window.scrollY/(this.test[i].offsetTop + this.test[i].offsetHeight))}`);
+                    this.class[i].style.transform = `rotateX(${-90+((window.scrollY)/(this.test[i].offsetTop + this.test[i].offsetHeight)*90)}deg) scale(${(window.scrollY)/(this.test[i].offsetTop + this.test[i].offsetHeight)})`;
+                    // this.class[i+1].style.transform = `rotateX(${-90+(window.scrollY/(this.test[i].offsetTop + this.test[i].offsetHeight)*90)}deg) scale(${window.scrollY/(this.test[i].offsetTop + this.test[i].offsetHeight)})`;
+                    break;
+                }
+            }
+        }
+    }
+}
 const btn_ul = {
     class:document.getElementsByClassName('btn-nav-bar'),
     darkMode:false,
@@ -77,6 +108,7 @@ const btn_ul = {
     },
     ChangeMod:function (){
         this.darkMode == false? this.darkMode = true:this.darkMode = false; 
+        this.darkMode == true? document.getElementsByClassName('lrA')[0].style.backgroundImage = "url(./imgs/tower.png)":document.getElementsByClassName('lrA')[0].style.backgroundImage = "url(./imgs/radar.png)";
         this.darkMode == false? document.getElementsByClassName('changeMode')[0].innerHTML = 'DarkMode (off)':document.getElementsByClassName('changeMode')[0].innerHTML = 'DarkMode (on)';
         // console.log(this.darkMode,this.html.showDrakScene);
         this.darkMode == false? document.body.style.backgroundColor = '#dae2f8':document.body.style.backgroundColor = '#141517';
@@ -118,18 +150,21 @@ const btn_ul = {
             btn_ul.class[0].offsetParent.style.position = 'fixed';
             btn_ul.class[0].offsetParent.style.zIndex = '2';
             this.class[0].style.opacity = '1';
-            this.showDrakScene = false;
             setTimeout(function(){
                 document.getElementsByClassName('wrap-content')[0].style.opacity = '0';
                 document.getElementsByClassName('content')[0].style.zIndex = '3'
-                this.showDrakScene == true?0:btn_ul.darkMode == false? document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '1'
-                    :document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '0.5';
             },2000);
             setTimeout(function(){
                 document.getElementsByClassName('wrap-content')[0].style.opacity = '1';
+                document.getElementsByClassName('wrap-content')[0].style.overflow = 'hidden';
                 document.body.style.overflow = '';
                 btn_ul.html.class[0].remove();
                 anim_for(ul_info.const[num]);
+                    setTimeout(function(){
+                        btn_ul.html.showDrakScene = false;
+                        btn_ul.html.showDrakScene == true?0:btn_ul.darkMode == false? document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '1'
+                        :document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '0.5';
+                    },3000);
             },3000);
         }
     }
@@ -307,6 +342,7 @@ window.addEventListener('click',function(event){
 })
 window.addEventListener('scroll',function(){
     btn_ul.hideBtnUl = window.scrollY > btn_ul.class[0].offsetHeight;
+    ddd_card.whic_item();
     btn_ul.checkTextMargin();
         if(window.scrollY >= window.innerHeight*2){
             canvas[0].style.position = '';
@@ -375,7 +411,6 @@ function help_two(index,n = 0,l = arr_sym.length){
     }
 }
 function init(){
-        window.scrollTo(0,0);
         window.innerWidth < 900?obj.itIsPhone = true:0;
             canvas[0].style.position = 'fixed';
             canvas[0].style.top = 0;
@@ -398,7 +433,7 @@ function init(){
             // console.log(ul_nav_bar[0].children[i].className);
             ul_nav_bar[0].children[i].innerHTML = '<p>Secret</p>';
             // ul_nav_bar[0].children[i].innerHTML = '<p>Secret</p>';
-            main_wrap[0].children[i].classList.add('no-display');
+            // main_wrap[0].children[i].classList.add('no-display');
         }
             let child = document.createElement('P');
             child.classList.add('hide');
@@ -407,6 +442,9 @@ function init(){
             child.innerHTML = `DarkMode (off)`;
             ul_nav_bar[0].appendChild(child);
             btn_ul.html.showNav();
+            setTimeout(function(){
+                window.scrollTo(0,0);
+            },300);
         // btn_ul.html.HideNav(0);
 }
 // event.clientX > wrap_avatar[0].offsetParent.parentElement.offsetLeft && event.clientX < wrap_avatar[0].offsetParent.parentElement.offsetLeft+wrap_avatar[0].offsetParent.parentElement.offsetWidth &&

@@ -125,6 +125,7 @@ body{
     margin-left:-1rem;
 }
 .DarkScene{
+    overflow-y:hidden;
     width:100%;
     height:100%;
     background-color: #000;
@@ -223,14 +224,27 @@ body{
 
 }
 .test1{
-    /* width:100%; */
+    max-width:90vw;
     height:100vh;
     transition: filter 0.5s linear;
-    /* border:1px solid yellow; */
+    perspective: 255px;
+    padding-right: 5rem;
+    padding-left: 5rem;
+    /* background-color: black; */
 }
-.test1:nth-last-child(1){
+.test1:nth-child(1){
+    perspective: none;
+    max-width:none;
+}
+.wrap-spec{
+    height:inherit;
+    /* background-color: lightgreen; */
+    transition:transform 0.3s linear;
+    /* transform-style: preserve-3d; */
+}
+/* .test1:nth-last-child(1){
     overflow-y: hidden;
-}
+} */
 /* .who_i_am .study{
     color:lime;
 } */
@@ -285,7 +299,79 @@ body{
     background-image: url("imgs/photo-1477346611705-65d1883cee1e.jpg");
     background-size: cover;
 }
+.ul_mypower li{
+    transition: padding 0.3s linear;
+}
+.ul_mypower li:hover{
+    padding-left:2rem;
+
+}
+.w3{
+    text-decoration: none;
+    line-height: 1;
+    /* -webkit-font-smoothing: antialiased; */
+    /* -moz-osx-font-smoothing: grayscale; */
+    font-size: 37px;
+    letter-spacing: 3px;
+    color: #555555;
+    display: block;
+    position: relative;
+    font-family:'Roboto';
+}
+.w3 span{
+    color:#4CAF50;
+}
+.metanit{
+    font-family: sans-serif;
+    color:#444;
+    font-size:30px;
+}
+.mozilla{
+    text-decoration: none;
+    background-color: black;
+    color:white;
+    font-size:2rem;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.learnjs{
+    color:white;
+    text-decoration: none;
+    font-size:2rem;
+}
+.lrA{
+    background-image: url(./imgs/radar.png);
+    width: 2rem;
+    height: 2rem;
+    display: inline-block;
+    background-size: cover;
+}
+.yt{
+    color:#212121;
+    text-decoration: none;
+    font-size:2rem;
+}
+.yt sup{
+    color:#8296a0;
+    font-size:0.8rem;
+}
+.utI{
+    background-image: url(./imgs/youtube.png);
+    width: 2rem;
+    height: 2rem;
+    display: inline-block;
+    background-size: cover;
+}
+.tnaky span:nth-child(1){
+    color:lemonchiffon;
+}
+.tnaky span:nth-child(2){
+    color:palevioletred;
+}
 @media(max-width:360px){
+    .changeMode{
+        margin-left:-2rem;
+    }
     .my-avatar{
         width:80vw;
         height:35vh;
@@ -358,8 +444,28 @@ body{
     }
 }
 @media(max-width:900px){
+    .DarkScene::after{
+        width:101vh;
+        content:'Not a bug it\'s advantage';
+        font-size:3rem;
+        color:black;
+        left:70px;
+        position:absolute;
+        transform:rotateZ(90deg);
+        background-color: gold;
+        top:46vh;
+    }
+    .changeMode{
+        margin-left:-2rem;
+    }
+    .flex-column{
+        align-items: center;
+    }
+    .wrap-spec{
+        margin-top:5vh;
+    }
     .my_skills ul li{
-        font-size:1.5rem;
+        font-size:1rem;
         padding:1rem;
     }
     .my_skills ul li:nth-last-child(1){
@@ -375,6 +481,23 @@ body{
     }
 }
 @media(min-width:900px){
+    .DarkScene::after{
+        width:101vh;
+        content:'Not a bug it\'s advantage';
+        font-size:3rem;
+        color:black;
+        left:77%;
+        position:absolute;
+        transform:rotateZ(90deg);
+        background-color: gold;
+        top:47vh;
+    }
+    .changeMode{
+        margin-left:-4rem;
+    }
+    .wrap-spec{
+        margin-top:15vh;
+    }
     .my_skills ul li{
         font-size:2rem;
         padding: 1rem;

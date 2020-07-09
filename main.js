@@ -6,7 +6,7 @@ const canvas = document.getElementsByClassName('canvas');
 const main_wrap = document.getElementsByClassName('main-content');
 const ddd_card = {
     class:document.getElementsByClassName('wrap-spec'),
-    test:document.getElementsByClassName('test1'),
+    test:document.getElementsByClassName('block-content'),
     deg:90,
     // window.y >= this.offsetTop+offsetHeight = +90deg
     whic_item:function(){
@@ -39,8 +39,10 @@ const btn_ul = {
     class:document.getElementsByClassName('btn-nav-bar'),
     darkMode:false,
     onFocus:false,
+    inProgressAnim:false,
     hideBtnUl: false,
     open:function (){
+        // console.log('open');
             this.class[0].innerHTML = 'Clouse';
             this.class[0].style.borderRadius = '0%';
             this.class[0].style.transform = 'rotate(360deg)';
@@ -54,6 +56,7 @@ const btn_ul = {
             },400);
     },
     clouse:function (){
+        // console.log('clouse');
             this.class[0].innerHTML = 'Open';
             this.class[0].style.transform = 'rotate(-360deg)';
             this.class[0].style.borderRadius = '50%';
@@ -76,10 +79,11 @@ const btn_ul = {
                             if(ul_info.can_anim[i]){
                                 if(event.target != ul_info.const[i].last_item){
                                     // console.log(event.target,event.target.children[0]);
-                                    ul_info.const[i]['last_item'] = event.target.tagName == 'P'?ul_info.const[i]['last_item'] = event.target:ul_info.const[i]['last_item'] = event.target.children[0];
+                                    ul_info.const[i]['last_item'] = event.target.tagName == 'P'?event.target:event.target.children[0];
                                     ul_info.current_anim.push(i);
                                     // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
                                     btn_ul.html.showDrakScene?  btn_ul.html.HideNav(i):anim_for(ul_info.const[i]);
+                                    btn_ul.inProgressAnim = true;
                                 }
                             }
                         }
@@ -114,9 +118,9 @@ const btn_ul = {
         this.darkMode == false? document.body.style.backgroundColor = '#dae2f8':document.body.style.backgroundColor = '#141517';
         this.html.showDrakScene == true?0:this.darkMode == false? document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '1':document.getElementsByClassName('wrap_for_bgc')[0].style.opacity = '0.5';
         for(let i =0; i < main_wrap[0].childElementCount;i++){
-            // i == 0?document.getElementsByClassName('test1')[i].style.opacity = 0.5:0;
-            this.darkMode == false? document.getElementsByClassName('test1')[0].style.opacity = 1:document.getElementsByClassName('test1')[0].style.opacity = 0.5;
-            this.darkMode == false? document.getElementsByClassName('test1')[i].style.color = 'black': document.getElementsByClassName('test1')[i].style.color = 'white';
+            // i == 0?document.getElementsByClassName('block-content')[i].style.opacity = 0.5:0;
+            this.darkMode == false? document.getElementsByClassName('block-content')[0].style.opacity = 1:document.getElementsByClassName('block-content')[0].style.opacity = 0.5;
+            this.darkMode == false? document.getElementsByClassName('block-content')[i].style.color = 'black': document.getElementsByClassName('block-content')[i].style.color = 'white';
         }
         this.checkTextMargin();
         obj.fresh_data();
@@ -127,10 +131,10 @@ const btn_ul = {
         showNav:function(){
             btn_ul.class[0].offsetParent.style.position = 'absolute';
             btn_ul.class[0].offsetParent.style.zIndex = '6';
-            setTimeout(hui,500);
-            function hui(){
-                btn_ul.open();
-            }
+            // setTimeout(hui,500);
+            // function hui(){
+            //     btn_ul.open();
+            // }
             this.class[0].style.textAlign = 'center';
             // this.class[0].style.display = 'flex';
             this.class[0].classList.add('flex-column-center-between');
@@ -159,6 +163,7 @@ const btn_ul = {
                 document.getElementsByClassName('wrap-content')[0].style.overflow = 'hidden';
                 document.body.style.overflow = '';
                 btn_ul.html.class[0].remove();
+                document.getElementsByClassName('preview')[0].remove();
                 anim_for(ul_info.const[num]);
                     setTimeout(function(){
                         btn_ul.html.showDrakScene = false;
@@ -178,26 +183,11 @@ let obj = {
             if(this.y + window.innerHeight*0.5 >= main_wrap[0].children[i].offsetTop &&
                 this.y + window.innerHeight*0.5 < main_wrap[0].children[i].offsetHeight + main_wrap[0].children[i].offsetTop ){
                 ul_nav_bar[0].children[i].style.color = 'lightcoral';
-                // !btn_ul.html.showDrakScene?main_wrap[0].children[i].classList.remove('no-display'):0;
-                if(!btn_ul.html.showDrakScene){
-                        obj.last_elem != ul_nav_bar[0].children[i]?new_last():0;
-                    function new_last(){
-                        obj.last_elem = ul_nav_bar[0].children[i];
-                        // console.log(obj);
-                        setTimeout(auto_secret,150);
-                    }
-                    function auto_secret(){
-                        // console.log(ul_nav_bar[0].children[i],ul_nav_bar[0].children[i].children[0]);
-                        ul_info.const[i]['last_item'] = ul_nav_bar[0].children[i].children[0];
-                        ul_info.current_anim.push(i);
-                        // console.log(`START :: ${ul_info.const[i].last_item.innerHTML} index:: ${ul_info.current_anim}`);
-                        obj.noScroll = true;
-                        anim_for(ul_info.const[i]);
-                        // ul_info.unlockItem(i);
-                        
-                    }
+                if(ul_nav_bar[0].children[i].innerText == 'Secret' && btn_ul.inProgressAnim == false){
+                    ul_info.const[i]['last_item'] = ul_nav_bar[0].children[i].children[0]
+                    ul_info.current_anim.push(i);
+                    anim_for(ul_info.const[i]);
                 }
-                // document.title = ul_nav_bar[0].children[i].innerText.includes('Secret')? testt(): document.title = ul_nav_bar[0].children[i].innerText;
                 document.title = ul_nav_bar[0].children[i].innerText.includes('Secret')? document.title = ul_nav_bar[0].children[i].innerText+' 0'+i: document.title = ul_nav_bar[0].children[i].innerText;
                 break;
             }
@@ -217,12 +207,12 @@ let ul_info = {
     n1:[],
     scrollFinish:false,
     reset:function(finish_number){
-        btn_ul.clouse();
+        btn_ul.inProgressAnim == false?0:btn_ul.clouse();
         // console.log('RESET OBJ',this.current_anim[0]);
         // this.const[finish_number].last_item.parentElement.style.color == 'lightcoral'?this.unlockItem(finish_number):this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
         // console.log(this.const[finish_number].last_item,this.const[finish_number].last_item.parentElement,this.const[finish_number].last_item.parentElement.style.color);
-        obj.noScroll?this.unlockItem(finish_number):this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
-        this.const[finish_number].last_item.innerHTML = this.const[finish_number].const;
+        this.scrollTo({item:main_wrap[0].children[finish_number].offsetTop,index:window.scrollY,finish_num:finish_number});
+        // this.const[finish_number].last_item.innerHTML = this.const[finish_number].const;
         this.const[finish_number].class[0] != undefined? this.const[finish_number].last_item.classList.add(`${this.const[finish_number].class[0]}`):0;
         // console.log(finish_number);
         this.can_anim[finish_number] = true;
@@ -254,8 +244,9 @@ let ul_info = {
         }
     },
     unlockItem:function(num){
-        // console.log(num,this.const[num].const);
-        main_wrap[0].children[num].classList.remove('no-display');
+        btn_ul.inProgressAnim = false;
+        // console.log(num,'UNLOCK',btn_ul.inProgressAnim);
+        ul_nav_bar[0].children[num].innerHTML = `<p>${this.const[num].const}</p>`;
         document.title = this.const[num].const;
     }
 }
@@ -271,8 +262,8 @@ init();
 
 window.addEventListener('mousemove',function(event){
     // console.log(event.target);
-    if(main_wrap[0].children[0].className.includes('no-display')){}
-    else{
+    // if(main_wrap[0].children[0].className.includes('no-display')){}
+    // else{
         if(event.clientX > avatar[0].offsetParent.parentElement.offsetLeft && 
             event.clientX < avatar[0].offsetParent.parentElement.offsetLeft + avatar[0].offsetParent.parentElement.offsetWidth &&
             event.clientY + window.scrollY> avatar[0].offsetParent.parentElement.offsetTop && 
@@ -284,7 +275,7 @@ window.addEventListener('mousemove',function(event){
                 }
         }
         else{css_class_js(false);}
-    }
+    // }
     if(btn_ul.hideBtnUl){
         if(event.target == btn_ul.class[0]){
             btn_ul.onFocus = true;
@@ -352,7 +343,7 @@ window.addEventListener('scroll',function(){
             canvas[0].style.position = 'fixed';
             canvas[0].style.top = 0;
         }
-    if(window.scrollY > btn_ul.class[0].offsetHeight){
+    if(btn_ul.hideBtnUl){
         btn_ul.class[0].innerHTML == 'Open'?btn_ul.class[0].classList.add('btn-mini-hide'):0;
     }
     else{
@@ -366,6 +357,7 @@ function anim_for(item){
     }
     else{
         if(ul_info.can_anim){
+            
             ul_info.can_anim[item.index] = false;
             ul_info.n0[item.index] = 0;
             ul_info.n1[item.index] = item.last_item.innerHTML.length;
@@ -377,7 +369,7 @@ function anim_for(item){
 }
 function help_first(start_num,finish_num,index){
     ul_info.n0[index] = start_num;
-
+    // console.log(start_num,finish_num);
     if(start_num < finish_num){
         help_two(index);
     }
@@ -411,6 +403,7 @@ function help_two(index,n = 0,l = arr_sym.length){
     }
 }
 function init(){
+        btn_ul.inProgressAnim = true;
         window.innerWidth < 900?obj.itIsPhone = true:0;
             canvas[0].style.position = 'fixed';
             canvas[0].style.top = 0;

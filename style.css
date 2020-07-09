@@ -223,7 +223,7 @@ body{
     height:100%;
 
 }
-.test1{
+.block-content{
     max-width:90vw;
     height:100vh;
     transition: filter 0.5s linear;
@@ -232,7 +232,7 @@ body{
     padding-left: 5rem;
     /* background-color: black; */
 }
-.test1:nth-child(1){
+.block-content:nth-child(1){
     perspective: none;
     max-width:none;
 }
@@ -242,15 +242,12 @@ body{
     transition:transform 0.3s linear;
     /* transform-style: preserve-3d; */
 }
-/* .test1:nth-last-child(1){
+/* .block-content:nth-last-child(1){
     overflow-y: hidden;
 } */
 /* .who_i_am .study{
     color:lime;
 } */
-.my_skills , .who_i_am{
-    padding: 0 1rem;
-}
 .my_skills span{
     color:palevioletred;
 }
@@ -299,6 +296,14 @@ body{
     background-image: url("imgs/photo-1477346611705-65d1883cee1e.jpg");
     background-size: cover;
 }
+.span_power{
+    background-color: #000;
+    color:lightblue;
+    /* color:khaki; */
+    padding: 0 0.5rem 0 0.5rem;
+    /* border-bottom: 1px solid lightblue; */
+}
+
 .ul_mypower li{
     transition: padding 0.3s linear;
 }
@@ -364,6 +369,8 @@ body{
 }
 .tnaky span:nth-child(1){
     color:lemonchiffon;
+    padding: 0 0.5rem 0 0.5rem;
+    background-color: rgba(0,0,0,0.55);
 }
 .tnaky span:nth-child(2){
     color:palevioletred;
@@ -374,7 +381,7 @@ body{
     }
     .my-avatar{
         width:80vw;
-        height:35vh;
+        height:45vh;
     }
     .block{
         min-width:30px;
@@ -444,6 +451,9 @@ body{
     }
 }
 @media(max-width:900px){
+    .mytag_name{
+        font-size: 3rem;
+    }
     .DarkScene::after{
         width:101vh;
         content:'Not a bug it\'s advantage';
@@ -481,6 +491,9 @@ body{
     }
 }
 @media(min-width:900px){
+    .mytag_name{
+        font-size: 15rem;
+    }
     .DarkScene::after{
         width:101vh;
         content:'Not a bug it\'s advantage';
@@ -527,6 +540,22 @@ body{
     display: block;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    z-index: 5;
+}
+.mytag_name{
+    padding: 0;
+    margin: 0;
+    top:25%;
+    z-index: 4;
+    width:100%;
+    color:rgba(255,255,255,0.55);
+    display: flex;
+    justify-content: center;
+    position: absolute;
+}
+.preview{
+    top:35%;
 }
 .my-avatar:hover{
     cursor: pointer;
@@ -537,7 +566,7 @@ body{
     padding: 0;
     content:'ABC🤔';
     font-size:inherit;
-    color:red;
+    color:red;.mytag_name{
     overflow: hidden;
 } */
 .block-wrap{
